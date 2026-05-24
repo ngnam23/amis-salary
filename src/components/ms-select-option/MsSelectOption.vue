@@ -1,0 +1,62 @@
+<script setup>
+import { Select } from 'primevue'
+
+const props = defineProps({
+  options: {
+    type: Array,
+    required: true,
+  },
+
+  optionLabel: {
+    type: String,
+    default: 'label',
+  },
+  optionValue: {
+    type: String,
+    default: 'key',
+  },
+  placeholder: {
+    type: String,
+    default: '--- Chọn ---',
+  },
+})
+</script>
+
+<template>
+  <Select
+    :options="options"
+    :option-value="optionValue"
+    :option-label="optionLabel"
+    :placeholder="placeholder"
+  />
+</template>
+
+<style>
+.p-select {
+  height: 32px;
+  border-radius: 8px;
+}
+.p-select .p-select-label {
+  display: flex;
+  align-items: center;
+  font-size: 13px !important;
+}
+.p-select-list {
+  padding-left: 0;
+  padding-right: 0;
+}
+.p-select-option.p-select-option-selected {
+  background-color: #cdeadf;
+  color: #0e9a62;
+}
+.p-select-option {
+  border-radius: 0;
+}
+.p-select-option:not(.p-select-option-selected):not(.p-disabled):hover {
+  background-color: #e9eaeb;
+}
+.p-icon {
+  width: 12px;
+  height: 12px;
+}
+</style>

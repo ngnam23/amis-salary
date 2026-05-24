@@ -1,0 +1,204 @@
+.icon-ninedot-white {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  mask-image: url(../svgs/icon.svg);
+  mask-position: -62px -82px;
+  mask-repeat: no-repeat;
+  background-color: #fff !important;
+}
+.icon-search-white {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  mask-image: url(../svgs/icon.svg);
+  mask-position: 0px 0px;
+  mask-repeat: no-repeat;
+  background-color: #ffffffb3 !important;
+}
+.icon-setting-white {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-yHWDHVC3.svg);
+  mask-position: -362px -434px;
+  mask-repeat: no-repeat;
+  background-color: #fff !important;
+}
+.icon-new-feature-white {
+  width: 21px;
+  height: 19px;
+  cursor: pointer;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-yHWDHVC3.svg);
+  mask-position: -338px -435px;
+  mask-repeat: no-repeat;
+  background-color: #fff !important;
+}
+.icon-message-white {
+  width: 24px;
+  height: 24px;
+  background: url(../svgs/icon-message-white.svg) no-repeat center center;
+}
+.icon-notification-white {
+  width: 24px;
+  height: 24px;
+  background: url(../svgs/icon-notification-white.svg) no-repeat center center;
+}
+.icon-help-white {
+  width: 24px;
+  height: 24px;
+  background: url(../svgs/icon-help-white.svg) no-repeat center center;
+}
+.icon-more-white {
+  width: 24px;
+  height: 24px;
+  background: url(../svgs/icon-more-white.svg) no-repeat center center;
+}
+.icon-sidebar-dashboard {
+  width: 18px;
+  height: 18px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-yHWDHVC3.svg);
+  mask-position: -157px -357px;
+  mask-repeat: no-repeat;
+  background-color: #717680 !important;
+}
+.icon-sidebar-salary-composition {
+  width: 18px;
+  height: 18px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-yHWDHVC3.svg);
+  mask-position: -277px -357px;
+  mask-repeat: no-repeat;
+  background-color: #717680 !important;
+
+  &.active {
+    background-color: var(--primary-color) !important;
+  }
+}
+.icon-sidebar-salary-template {
+  width: 18px;
+  height: 18px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-yHWDHVC3.svg);
+  mask-position: -258px -357px;
+  mask-repeat: no-repeat;
+  background-color: #717680 !important;
+}
+.icon-sidebar-salary-data {
+  width: 18px;
+  height: 18px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-yHWDHVC3.svg);
+  mask-position: -178px -357px;
+  mask-repeat: no-repeat;
+  background-color: #717680 !important;
+}
+.icon-sidebar-salary-table {
+  width: 18px;
+  height: 18px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-yHWDHVC3.svg);
+  mask-position: -197px -357px;
+  mask-repeat: no-repeat;
+  background-color: #717680 !important;
+}
+.icon-sidebar-payment {
+  width: 18px;
+  height: 18px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-yHWDHVC3.svg);
+  mask-position: -218px -357px;
+  mask-repeat: no-repeat;
+  background-color: #717680 !important;
+}
+.icon-sidebar-report {
+  width: 18px;
+  height: 18px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-yHWDHVC3.svg);
+  mask-position: -238px -357px;
+  mask-repeat: no-repeat;
+  background-color: #717680 !important;
+}
+.icon-rule {
+  width: 17px;
+  height: 17px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+  mask-position: -82px -101px;
+  mask-repeat: no-repeat;
+  background-color: #6e737a !important;
+}
+.icon-plus-white {
+  width: 16px;
+  height: 18px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+  mask-position: -240px -1px;
+  mask-repeat: no-repeat;
+  background-color: #fff !important;
+}
+.icon-chevron-down-white {
+  width: 12px;
+  height: 8px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+  mask-position: -124px -6px;
+  mask-repeat: no-repeat;
+  background-color: #fff !important;
+}
+.icon-circle-minus-yellow {
+  width: 20px;
+  height: 20px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+  mask-position: -180px -40px;
+  mask-repeat: no-repeat;
+  background-color: #f90 !important;
+}
+.icon-copy {
+  width: 22px;
+  height: 18px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+  mask-position: -100px 0;
+  mask-repeat: no-repeat;
+  background-color: #6e737a !important;
+}
+.icon-pencil {
+  width: 15px;
+  height: 15px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+  mask-position: -82px -3px;
+  mask-repeat: no-repeat;
+  background-color: #6e737a !important;
+}
+.icon-trash-red {
+  width: 20px;
+  height: 20px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+  mask-position: -100px -21px;
+  mask-repeat: no-repeat;
+  background-color: #ff6161 !important;
+}
+.icon-circle-check-green {
+  width: 20px;
+  height: 20px;
+  mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+  mask-position: -141px -41px;
+  mask-repeat: no-repeat;
+  background-color: #25b973 !important;
+}
+.icon-start-page {
+  width: 16px;
+  height: 16px;
+  background: transparent url(https://crmcdng2.misacdn.net/assets/Images/icon/icon_collection.svg)
+    no-repeat -112px -224px;
+}
+.icon-previous-page {
+  width: 16px;
+  height: 16px;
+  background: transparent url(https://crmcdng2.misacdn.net/assets/Images/icon/icon_collection.svg)
+    no-repeat -288px -32px;
+}
+.icon-next-page {
+  width: 16px;
+  height: 16px;
+  background: transparent url(https://crmcdng2.misacdn.net/assets/Images/icon/icon_collection.svg)
+    no-repeat -304px -32px;
+}
+.icon-end-page {
+  width: 16px;
+  height: 16px;
+  background: transparent url(https://crmcdng2.misacdn.net/assets/Images/icon/icon_collection.svg)
+    no-repeat -128px -224px;
+}
