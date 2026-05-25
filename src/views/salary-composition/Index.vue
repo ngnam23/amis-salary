@@ -1,11 +1,15 @@
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import MsTable from '@/components/ms-table/MsTable.vue'
 import MsButtonBase from '@/components/ms-button/MsButtonBase.vue'
 import { useSalaryTable } from '@/composables/useSalaryTable'
 import MsSelectOption from '@/components/ms-select-option/MsSelectOption.vue'
 import { PAGE_SIZE_OPTIONS } from '@/constants/common'
 import PaginationTable from './_components/PaginationTable.vue'
+import IconField from 'primevue/iconfield'
+import InputIcon from 'primevue/inputicon'
+import InputText from 'primevue/inputtext'
+import MsSelect from '@/components/ms-select/MsSelect.vue'
 
 const listActionHead = [
   { label: 'Lấy lại dữ liệu', icon: 'icon-refresh', type: 'refresh' },
@@ -17,6 +21,12 @@ const batchActionOptions = [
   { label: 'Xóa hàng loạt', value: 'deleteAll' },
   { label: 'Sử dụng hàng loạt', value: 'activeAll' },
   { label: 'Ngừng sử dụng hàng loạt', value: 'unActiveAll' },
+]
+
+const activeTypeSelectOptions = [
+  { label: 'Tất cả', value: -1 },
+  { label: 'Đang sử dụng', value: 1 },
+  { label: 'Ngừng sử dụng', value: 0 },
 ]
 
 /**
@@ -145,10 +155,24 @@ onMounted(() => {
       </div>
     </div>
     <div class="flex flex-col items-center h-[calc(100%-46px)]">
-      <div class="w-full h-[56px] py-3 px-4 bg-white relative rounded-t-[8px]"></div>
+      <div class="w-full h-[56px] py-3 px-4 bg-white relative rounded-t-[8px]">
+        <div class="flex justify-between items-center h-full">
+          <div class="flex items-center gap-x-2">
+            <IconField>
+              <InputIcon class="pi pi-search" />
+              <InputText
+                v-model="keyword"
+                placeholder="Tìm kiếm"
+                class="!h-8 !rounded-[8px] !text-[13px]"
+              />
+            </IconField>
+            <MsSelect v-model="isActive" :options="activeTypeSelectOptions" />
+          </div>
+        </div>
+      </div>
       <div class="flex-1 w-full overflow-x-auto">
         <div class="min-w-full h-full overflow-x-auto">
-          <div class="h-[calc(100%-48px)] overflow-y-auto">
+          <div class="h-[calc(100%-48px)] overflow-y-auto bg-white">
             <ms-table
               :fields="fields.filter((field) => field.display)"
               :rows="rows"
@@ -184,7 +208,9 @@ onMounted(() => {
               </template>
             </ms-table>
           </div>
-          <div class="flex items-center px-4 justify-between h-12 bg-white rounded-b-[8px]">
+          <div
+            class="flex items-center px-4 justify-between h-12 bg-white rounded-b-[8px] border-t border-[#D5D7DA]"
+          >
             <span class="font-normal"
               >Tổng số: <span class="font-bold">{{ totalItems }}</span></span
             >

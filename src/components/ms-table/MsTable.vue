@@ -15,7 +15,7 @@
           class="text-[13px] bg-[#f5f5f5] px-3 border-b border-r border-t border-[#D5D7DA]"
           :style="{ width: `${field.width}px`, textAlign: 'left' }"
         >
-          <span class="!truncate">{{ field.label }}</span>
+          <span class="!truncate font-semibold">{{ field.label }}</span>
         </th>
         <th class="w-[200px] h-9 px-3 bg-[#f5f5f5] border-l border-b border-t border-[#D5D7DA]">
           <div class="flex items-center justify-end"></div>
