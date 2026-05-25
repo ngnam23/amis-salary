@@ -27,7 +27,7 @@
         <td class="!w-[50px] h-9 sticky left-0 z-20 bg-white border-b border-[#D5D7DA]">
           <div class="flex justify-center items-center">
             <Checkbox
-              v-model="selectedIds"
+              v-model="localSelectedIds"
               :value="row.salaryCompositionId"
               size="small"
               @change="handleRowSelect"
@@ -137,34 +137,48 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  selectedIds: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 const emit = defineEmits(['updateSelectedIds'])
 
-const selectedIds = ref([])
-const selectedAll = ref(true)
+const localSelectedIds = ref([])
+const selectedAll = ref(false)
 
 watch(
   () => props.rows,
   () => {
     selectedAll.value = false
-    selectedIds.value = []
+    localSelectedIds.value = []
+    emit('updateSelectedIds', [])
   },
   { deep: true },
 )
 
+watch(
+  () => props.selectedIds,
+  (newVal) => {
+    localSelectedIds.value = newVal || []
+    selectedAll.value = props.rows.length > 0 && localSelectedIds.value.length === props.rows.length
+  },
+  { deep: true, immediate: true },
+)
+
 const handleSelectAll = () => {
   if (selectedAll.value) {
-    selectedIds.value = props.rows.map((row) => row[props.keyField])
+    localSelectedIds.value = props.rows.map((row) => row[props.keyField])
   } else {
-    selectedIds.value = []
+    localSelectedIds.value = []
   }
-  emit('updateSelectedIds', selectedIds.value)
+  emit('updateSelectedIds', localSelectedIds.value)
 }
 
 const handleRowSelect = () => {
-  selectedAll.value = selectedIds.value.length === props.rows.length
-  emit('updateSelectedIds', selectedIds.value)
+  selectedAll.value = localSelectedIds.value.length === props.rows.length
+  emit('updateSelectedIds', localSelectedIds.value)
 }
 </script>
 

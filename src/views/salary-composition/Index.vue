@@ -10,17 +10,27 @@ import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
 import MsSelect from '@/components/ms-select/MsSelect.vue'
-
-const listActionHead = [
-  { label: 'Lấy lại dữ liệu', icon: 'icon-refresh', type: 'refresh' },
-  { label: 'Xuất ra Excel', icon: 'icon-excel', type: 'export' },
-  { label: 'Tùy chỉnh giao diện', icon: 'icon-setting', type: 'setting' },
-]
+import { useSalaryActions } from '@/composables/useSalaryActions'
 
 const batchActionOptions = [
-  { label: 'Xóa hàng loạt', value: 'deleteAll' },
-  { label: 'Sử dụng hàng loạt', value: 'activeAll' },
-  { label: 'Ngừng sử dụng hàng loạt', value: 'unActiveAll' },
+  {
+    label: 'Ngừng theo dõi',
+    value: 'unActiveAll',
+    icon: 'icon-circle-minus-yellow',
+    class: 'text-[#f90] border-[#FF9900] hover:bg-[#FEF0C7] hover:border-[#DC6803]',
+  },
+  {
+    label: 'Đang theo dõi',
+    value: 'activeAll',
+    icon: 'icon-circle-check-green',
+    class: 'text-[#34b057] !border-[#34b057] hover:bg-[#A8D9C8] hover:border-[#0A724B]',
+  },
+  {
+    label: 'Xóa',
+    value: 'deleteAll',
+    icon: 'icon-trash-red',
+    class: 'text-[#F04438] border-[#F04438] hover:bg-[#FEE4E2] hover:border-[#D92D20]',
+  },
 ]
 
 const activeTypeSelectOptions = [
@@ -96,12 +106,18 @@ const selectedIdsArray = ref([])
 const actionHeadIndex = ref(null)
 
 /**
- * Cập nhật danh sách các ID nhân viên đang được chọn trong bảng
- * @param {Array} selectedIds - Mảng chứa các ID nhân viên
+ * Cập nhật danh sách các ID được chọn trong bảng
+ * @param {Array} selectedIds - Mảng chứa các ID
  */
 const handleSelectedIds = (selectedIds) => {
   selectedIdsArray.value = selectedIds
 }
+
+const resetSelectedIds = () => {
+  selectedIdsArray.value = []
+}
+
+const { handleActionAll } = useSalaryActions(rows, selectedIdsArray, getData, resetSelectedIds)
 
 watch(
   [pageIndex, isActive],
@@ -166,7 +182,30 @@ onMounted(() => {
                 class="!h-8 !rounded-[8px] !text-[13px]"
               />
             </IconField>
-            <MsSelect v-model="isActive" :options="activeTypeSelectOptions" />
+            <div v-if="selectedIdsArray.length <= 0" class="flex items-center gap-x-2">
+              <MsSelect v-model="isActive" :options="activeTypeSelectOptions" />
+            </div>
+            <div v-else class="flex items-center gap-x-4">
+              <div class="flex items-center gap-x-4">
+                <span class="font-normal"
+                  >Đã chọn <span class="font-bold">{{ selectedIdsArray.length }}</span></span
+                >
+                <p class="text-[#34b057] font-normal cursor-pointer" @click="resetSelectedIds">
+                  Bỏ chọn
+                </p>
+              </div>
+              <div class="flex items-center gap-x-2">
+                <MsButtonBase
+                  v-for="item in batchActionOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :class="item.class"
+                  @click="() => handleActionAll(item)"
+                >
+                  <div :class="item.icon"></div>
+                </MsButtonBase>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -177,6 +216,7 @@ onMounted(() => {
               :fields="fields.filter((field) => field.display)"
               :rows="rows"
               :isLoading="isLoading"
+              :selected-ids="selectedIdsArray"
               key-field="salaryCompositionId"
               @update-selected-ids="handleSelectedIds"
             >

@@ -2,7 +2,9 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
-import 'primeicons/primeicons.css'
+import ToastService from 'primevue/toastservice'
+import Tooltip from 'primevue/tooltip'
+import ConfirmationService from 'primevue/confirmationservice'
 
 import '@/assets/styles/app.scss'
 import 'primeicons/primeicons.css'
@@ -20,5 +22,8 @@ app.use(PrimeVue, {
     preset: Aura,
   },
 })
+app.use(ToastService)
+app.use(ConfirmationService)
+app.directive('tooltip', Tooltip)
 
 app.mount('#app')
