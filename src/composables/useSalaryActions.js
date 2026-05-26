@@ -22,7 +22,7 @@ export const useSalaryActions = (rows, selectedIdsArray, getData, resetSelectedI
    * @param {string} detail - Nội dung chi tiết thông báo
    */
   const showToast = (severity, summary, detail) => {
-    toast.add({ severity, summary, detail, life: 3000, position: 'top-center' })
+    toast.add({ group: 'toast-alert', severity, summary, detail, life: 3000 })
   }
 
   /**
@@ -60,7 +60,7 @@ export const useSalaryActions = (rows, selectedIdsArray, getData, resetSelectedI
     try {
       const response = await http.delete(listApi.SalaryCompositionsDelete, { data: idString })
       if (response.isSuccess) {
-        showToast('success', 'Thành công', 'Đã xóa thành công')
+        showToast('success', 'Thành công', 'Xóa thành công')
         getData()
       }
     } catch (error) {
@@ -80,7 +80,7 @@ export const useSalaryActions = (rows, selectedIdsArray, getData, resetSelectedI
     try {
       const response = await http.put(listApi.SalaryCompositionsStatus, { status, ids: idString })
       if (response.isSuccess) {
-        showToast('success', 'Thành công', 'Đã thay đổi trạng thái thành công')
+        showToast('success', 'Thành công', 'Cập nhật thành công')
         getData()
       }
     } catch (error) {

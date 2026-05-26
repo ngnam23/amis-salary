@@ -27,3 +27,13 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #e9eaeb #fff;
 }
+
+// Reset css
+.p-toast {
+  width: unset !important;
+
+  & .p-toast-message-success {
+    background: unset !important;
+    border-width: 0 !important;
+  }
+}

@@ -5,7 +5,21 @@ import ConfirmDialog from 'primevue/confirmdialog'
 </script>
 
 <template>
-  <Toast />
+  <Toast position="top-center" group="toast-alert" @close="visible = false">
+    <template #container="{ message, closeCallback }">
+      <div
+        class="flex justify-between items-center w-[300px] bg-[#12B76A] text-white py-2 min-h-8 border-none rounded-[8px]"
+      >
+        <div class="px-3 flex items-center gap-x-2">
+          <div class="pi pi-check" style="font-size: 16px"></div>
+          <p>{{ message.detail }}</p>
+        </div>
+        <div class="flex items-center justify-center w-8 h-8 cursor-pointer" @click="closeCallback">
+          <div class="pi pi-times" style="font-size: 14px"></div>
+        </div>
+      </div>
+    </template>
+  </Toast>
   <ConfirmPopup group="popup" />
   <ConfirmDialog group="confirm-dialog" class="custom-dialog">
     <template #container="{ message, acceptCallback, rejectCallback, closeCallback }">
