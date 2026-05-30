@@ -45,7 +45,7 @@ export const useSalaryTable = () => {
   const getData = async () => {
     isLoading.value = true
     try {
-      const response = await http.get(listApi.SalaryCompositions, {
+      const response = await http.get(listApi.SalaryCompositionsPaging, {
         params: {
           pageSize: pageSize.value,
           pageIndex: pageIndex.value,

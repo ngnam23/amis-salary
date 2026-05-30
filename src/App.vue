@@ -42,7 +42,7 @@ import ConfirmDialog from 'primevue/confirmdialog'
             @click="rejectCallback"
             :class="[
               'min-w-[80px] !h-[32px] !px-3 !text-[13px] !bg-white border border-[#D5D7DA] hover:!bg-[#E9EAEB] !rounded-[8px] !text-[#101828]',
-              message.rejectClass,
+              message.rejectClass ? message.rejectClass : '',
             ]"
           >
             {{ message.rejectLabel }}
@@ -50,8 +50,8 @@ import ConfirmDialog from 'primevue/confirmdialog'
           <button
             @click="acceptCallback"
             :class="[
-              'min-w-[80px] !h-[32px] !px-3 !text-white !text-[13px] !bg-[#0E9A62] hover:!bg-[#0A724B] !rounded-[8px]',
-              message.acceptClass,
+              'min-w-[80px] !h-[32px] !px-3 !text-white !text-[13px] !rounded-[8px]',
+              message.acceptClass ? message.acceptClass : '!bg-[#0E9A62] hover:!bg-[#0A724B]',
             ]"
           >
             {{ message.acceptLabel }}

@@ -6,6 +6,7 @@ export default {
     './src/views/**/*.{vue,js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{vue,js,ts,jsx,tsx,mdx}',
     './src/layouts/**/*.{vue,js,ts,jsx,tsx,mdx}',
+    './src/composables/**/*.{js,ts}',
     './src/App.vue',
   ],
   theme: {

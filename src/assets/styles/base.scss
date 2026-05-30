@@ -32,7 +32,8 @@ body {
 .p-toast {
   width: unset !important;
 
-  & .p-toast-message-success {
+  & .p-toast-message-success,
+  & .p-toast-message-error {
     background: unset !important;
     border-width: 0 !important;
   }

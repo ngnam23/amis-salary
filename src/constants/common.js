@@ -91,9 +91,43 @@ export const OptionShowPaycheck = [
   { key: 3, label: 'Chỉ hiển thị nếu giá trị khác 0' },
 ]
 
+export const SumScope = [
+  {
+    key: 1,
+    label: 'Trong cùng đơn vị công tác',
+  },
+  {
+    key: 2,
+    label: 'Dưới quyền',
+  },
+  {
+    key: 3,
+    label: 'Thuộc cơ cấu tổ chức',
+  },
+]
+
 export const PAGE_SIZE_OPTIONS = [
   { key: 15, label: '15' },
   { key: 20, label: '20' },
   { key: 50, label: '50' },
   { key: 100, label: '100' },
+]
+
+export const AutoSumOrgLevel = [
+  {
+    key: 1,
+    label: 'Cấp 1',
+  },
+  {
+    key: 2,
+    label: 'Cấp 2',
+  },
+  {
+    key: 3,
+    label: 'Cấp 3',
+  },
+  {
+    key: 4,
+    label: 'Cấp 4',
+  },
 ]

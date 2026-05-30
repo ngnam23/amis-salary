@@ -132,13 +132,27 @@ export const useSalaryActions = (rows, selectedIdsArray, getData, resetSelectedI
    * @param {Object} row - Dữ liệu của dòng nhân viên tương ứng
    */
   const handleRowSelect = (option, row) => {
-    if (option.value === 'delete') {
-      showConfirm(`Bạn có thực sự muốn xóa Nhân viên <${row.employeeCode}> không?`, () => {
-        handleDeleteSalaryComposition([row.employeeID])
-      })
-    } else if (option.value === 'toggleStatus') {
-      handleChangeStatusSalaryComposition(row.isActive ? 0 : 1, [row.employeeID])
-    } else if (option.value === 'double') {
+    if (option === 'delete') {
+      showConfirm(
+        `Bạn có chắc chắn muốn xóa thành phần lương ${row.salaryCompositionName} không?`,
+        () => {
+          handleDeleteSalaryComposition([row.salaryCompositionId])
+        },
+        'Thông báo',
+        'Xóa',
+        'Hủy',
+        '!bg-[#F04438] !border-[#F04438] hover:!bg-[#D92D20]',
+        '',
+      )
+    } else if (option === 'toggleStatus') {
+      showConfirm(
+        `Bạn có chắc chắn muốn chuyển trạng thái thành phần lương ${row.salaryCompositionName} sang ${row.isActive ? 'ngừng theo dõi' : 'đang theo dõi'} không?`,
+        () => {
+          handleChangeStatusSalaryComposition(row.isActive ? 0 : 1, [row.salaryCompositionId])
+        },
+        'Chuyển trạng thái',
+      )
+    } else if (option === 'double') {
       //   handleOpenDialogToDouble(row.employeeID)
     }
   }
@@ -148,5 +162,6 @@ export const useSalaryActions = (rows, selectedIdsArray, getData, resetSelectedI
     handleChangeStatusSalaryComposition,
     handleActionAll,
     handleRowSelect,
+    showToast,
   }
 }

@@ -46,7 +46,7 @@ const props = defineProps({
   },
   prefixLabel: {
     type: String,
-    default: 'Trạng thái:',
+    default: '',
   },
 })
 

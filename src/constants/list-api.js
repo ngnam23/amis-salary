@@ -1,5 +1,6 @@
 export const listApi = {
-  SalaryCompositions: '/SalaryCompositions/paging',
+  SalaryCompositions: '/SalaryCompositions',
+  SalaryCompositionsPaging: '/SalaryCompositions/paging',
   SalaryCompositionsDelete: '/SalaryCompositions',
   SalaryCompositionsStatus: '/SalaryCompositions/status',
 }

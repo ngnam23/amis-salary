@@ -1,3 +1,5 @@
+import 'devextreme/dist/css/dx.light.css'
+import 'devextreme/dist/css/dx.light.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'

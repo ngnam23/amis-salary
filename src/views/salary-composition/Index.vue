@@ -11,6 +11,8 @@ import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
 import MsSelect from '@/components/ms-select/MsSelect.vue'
 import { useSalaryActions } from '@/composables/useSalaryActions'
+import { useSalaryCompositionGrid } from '@/composables/useSalaryCompositionGrid'
+import SalaryCompositionGrid from './_components/SalaryCompositionGrid.vue'
 
 const batchActionOptions = [
   {
@@ -117,7 +119,14 @@ const resetSelectedIds = () => {
   selectedIdsArray.value = []
 }
 
-const { handleActionAll } = useSalaryActions(rows, selectedIdsArray, getData, resetSelectedIds)
+const { handleActionAll, handleRowSelect } = useSalaryActions(
+  rows,
+  selectedIdsArray,
+  getData,
+  resetSelectedIds,
+)
+
+const { isOpenSalaryCompositionGrid, type, handleOpenCreate } = useSalaryCompositionGrid()
 
 watch(
   [pageIndex, isActive],
@@ -148,130 +157,147 @@ onMounted(() => {
 
 <template>
   <div class="w-[calc(100%-235px)] bg-[#f1f2f1] pt-3 px-4 pb-4">
-    <div class="flex justify-between pb-[14px]">
-      <h2 class="text-[20px] font-bold">Thành phần lương</h2>
-      <div class="flex gap-x-3">
-        <MsButtonBase label="Danh mục của hệ thống"> <div class="icon-rule"></div> </MsButtonBase>
-        <div class="flex items-center">
-          <div
-            class="flex items-center justify-center gap-x-2 w-[88px] h-8 px-3 bg-[#0E9A62] border border-[#0E9A62] text-white !mr-0 rounded-l-[8px] hover:bg-[#0A724B] cursor-pointer"
-          >
-            <div class="icon-plus-white"></div>
-            Thêm
-          </div>
-          <div class="flex items-center h-8 w-[1px] bg-primary">
-            <div class="h-5 w-[1px] bg-white"></div>
-          </div>
-          <div
-            class="flex items-center justify-center gap-x-2 w-8 h-8 bg-[#0E9A62] border border-[#0E9A62] text-white !ml-0 rounded-r-[8px] hover:bg-[#0A724B] cursor-pointer"
-          >
-            <div class="icon-chevron-down-white"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="flex flex-col items-center h-[calc(100%-46px)]">
-      <div class="w-full h-[56px] py-3 px-4 bg-white relative rounded-t-[8px]">
-        <div class="flex justify-between items-center h-full">
-          <div class="flex items-center gap-x-2">
-            <IconField>
-              <InputIcon class="pi pi-search" />
-              <InputText
-                v-model="keyword"
-                placeholder="Tìm kiếm"
-                class="!h-8 !rounded-[8px] !text-[13px]"
-              />
-            </IconField>
-            <div v-if="selectedIdsArray.length <= 0" class="flex items-center gap-x-2">
-              <MsSelect v-model="isActive" :options="activeTypeSelectOptions" />
-            </div>
-            <div v-else class="flex items-center gap-x-4">
-              <div class="flex items-center gap-x-4">
-                <span class="font-normal"
-                  >Đã chọn <span class="font-bold">{{ selectedIdsArray.length }}</span></span
-                >
-                <p class="text-[#34b057] font-normal cursor-pointer" @click="resetSelectedIds">
-                  Bỏ chọn
-                </p>
-              </div>
-              <div class="flex items-center gap-x-2">
-                <MsButtonBase
-                  v-for="item in batchActionOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :class="item.class"
-                  @click="() => handleActionAll(item)"
-                >
-                  <div :class="item.icon"></div>
-                </MsButtonBase>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex-1 w-full overflow-x-auto">
-        <div class="min-w-full h-full overflow-x-auto">
-          <div class="h-[calc(100%-48px)] overflow-y-auto bg-white">
-            <ms-table
-              :fields="fields.filter((field) => field.display)"
-              :rows="rows"
-              :isLoading="isLoading"
-              :selected-ids="selectedIdsArray"
-              key-field="salaryCompositionId"
-              @update-selected-ids="handleSelectedIds"
+    <div v-if="!isOpenSalaryCompositionGrid" class="w-full h-full">
+      <div class="flex justify-between pb-[14px]">
+        <h2 class="text-[20px] font-bold">Thành phần lương</h2>
+        <div class="flex gap-x-3">
+          <MsButtonBase label="Danh mục của hệ thống"> <div class="icon-rule"></div> </MsButtonBase>
+          <div class="flex items-center">
+            <div
+              class="flex items-center justify-center gap-x-2 w-[88px] h-8 px-3 bg-[#0E9A62] border border-[#0E9A62] text-white !mr-0 rounded-l-[8px] hover:bg-[#0A724B] cursor-pointer"
+              @click="handleOpenCreate"
             >
-              <template #action="{ row }">
-                <div class="flex items-center gap-x-2 justify-center px-3">
-                  <div
-                    class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
+              <div class="icon-plus-white"></div>
+              Thêm
+            </div>
+            <div class="flex items-center h-8 w-[1px] bg-primary">
+              <div class="h-5 w-[1px] bg-white"></div>
+            </div>
+            <div
+              class="flex items-center justify-center gap-x-2 w-8 h-8 bg-[#0E9A62] border border-[#0E9A62] text-white !ml-0 rounded-r-[8px] hover:bg-[#0A724B] cursor-pointer"
+            >
+              <div class="icon-chevron-down-white"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col items-center h-[calc(100%-46px)]">
+        <div class="w-full h-[56px] py-3 px-4 bg-white relative rounded-t-[8px]">
+          <div class="flex justify-between items-center h-full">
+            <div class="flex items-center gap-x-2">
+              <IconField>
+                <InputIcon class="pi pi-search" />
+                <InputText
+                  v-model="keyword"
+                  placeholder="Tìm kiếm"
+                  class="!h-8 !rounded-[8px] !text-[13px]"
+                />
+              </IconField>
+              <div v-if="selectedIdsArray.length <= 0" class="flex items-center gap-x-2">
+                <MsSelect
+                  v-model="isActive"
+                  :options="activeTypeSelectOptions"
+                  prefix-label="Trạng thái:"
+                />
+              </div>
+              <div v-else class="flex items-center gap-x-4">
+                <div class="flex items-center gap-x-4">
+                  <span class="font-normal"
+                    >Đã chọn <span class="font-bold">{{ selectedIdsArray.length }}</span></span
                   >
-                    <div
-                      :class="row.isActive ? 'icon-circle-minus-yellow' : 'icon-circle-check-green'"
-                    ></div>
-                  </div>
-                  <div
-                    class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
-                  >
-                    <div class="icon-copy"></div>
-                  </div>
-                  <div
-                    class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
-                  >
-                    <div class="icon-pencil"></div>
-                  </div>
-                  <div
-                    class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
-                  >
-                    <div class="icon-trash-red"></div>
-                  </div>
+                  <p class="text-[#34b057] font-normal cursor-pointer" @click="resetSelectedIds">
+                    Bỏ chọn
+                  </p>
                 </div>
-              </template>
-            </ms-table>
+                <div class="flex items-center gap-x-2">
+                  <MsButtonBase
+                    v-for="item in batchActionOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :class="item.class"
+                    @click="() => handleActionAll(item)"
+                  >
+                    <div :class="item.icon"></div>
+                  </MsButtonBase>
+                </div>
+              </div>
+            </div>
           </div>
-          <div
-            class="flex items-center px-4 justify-between h-12 bg-white rounded-b-[8px] border-t border-[#D5D7DA]"
-          >
-            <span class="font-normal"
-              >Tổng số: <span class="font-bold">{{ totalItems }}</span></span
+        </div>
+        <div class="flex-1 w-full overflow-x-auto">
+          <div class="min-w-full h-full overflow-x-auto">
+            <div class="h-[calc(100%-48px)] overflow-y-auto bg-white">
+              <ms-table
+                :fields="fields.filter((field) => field.display)"
+                :rows="rows"
+                :isLoading="isLoading"
+                :selected-ids="selectedIdsArray"
+                key-field="salaryCompositionId"
+                @update-selected-ids="handleSelectedIds"
+              >
+                <template #action="{ row }">
+                  <div class="flex items-center gap-x-2 justify-center px-3">
+                    <div
+                      class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
+                      @click="() => handleRowSelect('toggleStatus', row)"
+                    >
+                      <div
+                        :class="
+                          row.isActive ? 'icon-circle-minus-yellow' : 'icon-circle-check-green'
+                        "
+                      ></div>
+                    </div>
+                    <div
+                      class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
+                    >
+                      <div class="icon-copy"></div>
+                    </div>
+                    <div
+                      class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
+                    >
+                      <div class="icon-pencil"></div>
+                    </div>
+                    <div
+                      class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
+                      @click="() => handleRowSelect('delete', row)"
+                    >
+                      <div class="icon-trash-red"></div>
+                    </div>
+                  </div>
+                </template>
+              </ms-table>
+            </div>
+            <div
+              class="flex items-center px-4 justify-between h-12 bg-white rounded-b-[8px] border-t border-[#D5D7DA]"
             >
-            <div class="flex items-center gap-x-4">
-              <span class="font-normal">Số dòng/trang</span>
-              <MsSelectOption v-model="pageSize" :options="PAGE_SIZE_OPTIONS" />
-              <p>{{ indexStart + 1 }} - {{ indexEnd }}</p>
-              <PaginationTable
-                :indexStart="indexStart"
-                :indexEnd="indexEnd"
-                :disableBtnPrev="disableBtnPrev"
-                :disableBtnNext="disableBtnNext"
-                @prevStartPage="handlePrevStartPage"
-                @prevPage="handlePrevPage"
-                @nextPage="handleNextPage"
-                @nextEndPage="handleNextEndPage"
-              />
+              <span class="font-normal"
+                >Tổng số: <span class="font-bold">{{ totalItems }}</span></span
+              >
+              <div class="flex items-center gap-x-4">
+                <span class="font-normal">Số dòng/trang</span>
+                <MsSelectOption v-model="pageSize" :options="PAGE_SIZE_OPTIONS" />
+                <p>{{ indexStart + 1 }} - {{ indexEnd }}</p>
+                <PaginationTable
+                  :indexStart="indexStart"
+                  :indexEnd="indexEnd"
+                  :disableBtnPrev="disableBtnPrev"
+                  :disableBtnNext="disableBtnNext"
+                  @prevStartPage="handlePrevStartPage"
+                  @prevPage="handlePrevPage"
+                  @nextPage="handleNextPage"
+                  @nextEndPage="handleNextEndPage"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <SalaryCompositionGrid
+      v-if="isOpenSalaryCompositionGrid"
+      :type="type"
+      @close="isOpenSalaryCompositionGrid = false"
+      @refresh="getData"
+    />
   </div>
 </template>
