@@ -11,7 +11,14 @@ import { useToast } from 'primevue/usetoast'
  * @param {Function} handleOpenDialogToDouble - Hàm mở dialog nhân bản
  * @returns {Object} Các phương thức xử lý hành động
  */
-export const useSalaryActions = (rows, selectedIdsArray, getData, resetSelectedIds) => {
+export const useSalaryActions = (
+  rows,
+  selectedIdsArray,
+  getData,
+  resetSelectedIds,
+  handleOpenToUpdate,
+  handleOpenToDouble,
+) => {
   const confirm = useConfirm()
   const toast = useToast()
 
@@ -153,7 +160,9 @@ export const useSalaryActions = (rows, selectedIdsArray, getData, resetSelectedI
         'Chuyển trạng thái',
       )
     } else if (option === 'double') {
-      //   handleOpenDialogToDouble(row.employeeID)
+      handleOpenToDouble(row.salaryCompositionId)
+    } else if (option === 'update') {
+      handleOpenToUpdate(row.salaryCompositionId)
     }
   }
 

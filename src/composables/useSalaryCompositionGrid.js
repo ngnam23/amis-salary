@@ -8,21 +8,21 @@ import { ref } from 'vue'
  */
 export const useSalaryCompositionGrid = () => {
   const isOpenSalaryCompositionGrid = ref(false)
-  const employeeDetail = ref(null)
+  const salaryCompositionDetail = ref(null)
   const type = ref('create')
 
   /**
    * Lấy thông tin chi tiết của một nhân viên theo ID
-   * @param {string} employeeID - ID của nhân viên cần lấy thông tin
+   * @param {string} id - ID của nhân viên cần lấy thông tin
    */
-  const getEmployeeDetail = async (employeeID) => {
+  const getSalaryCompositionDetail = async (id) => {
     try {
-      const response = await http.get(`${listApi.Employees}/${employeeID}`)
-      if (response.success) {
-        employeeDetail.value = response.data
+      const response = await http.get(`${listApi.SalaryCompositions}/${id}`)
+      if (response.isSuccess) {
+        salaryCompositionDetail.value = response.data
       }
     } catch {
-      employeeDetail.value = null
+      salaryCompositionDetail.value = null
     }
   }
 
@@ -35,21 +35,21 @@ export const useSalaryCompositionGrid = () => {
   }
 
   /**
-   * Mở Dialog để cập nhật thông tin nhân viên (lấy thông tin chi tiết và đặt type = 'update')
-   * @param {string} employeeID - ID của nhân viên cần cập nhật
+   * Mở Dialog để cập nhật thông tin thành phần lương (lấy thông tin chi tiết và đặt type = 'update')
+   * @param {string} id - ID của thành phần lương cần cập nhật
    */
-  const handleOpenToUpdate = async (employeeID) => {
-    await getEmployeeDetail(employeeID)
+  const handleOpenToUpdate = async (id) => {
+    await getSalaryCompositionDetail(id)
     type.value = 'update'
     isOpenSalaryCompositionGrid.value = true
   }
 
   /**
-   * Mở Dialog để nhân bản nhân viên (lấy thông tin cũ, lấy mã mới và đặt type = 'double')
-   * @param {string} employeeID - ID của nhân viên cần nhân bản
+   * Mở Dialog để nhân bản thành phần lương (lấy thông tin cũ, lấy mã mới và đặt type = 'double')
+   * @param {string} id - ID của thành phần lương cần nhân bản
    */
-  const handleOpenToDouble = async (employeeID) => {
-    await getEmployeeDetail(employeeID)
+  const handleOpenToDouble = async (id) => {
+    await getSalaryCompositionDetail(id)
     type.value = 'double'
     isOpenSalaryCompositionGrid.value = true
   }
@@ -63,7 +63,7 @@ export const useSalaryCompositionGrid = () => {
 
   return {
     isOpenSalaryCompositionGrid,
-    employeeDetail,
+    salaryCompositionDetail,
     type,
     handleOpenCreate,
     handleOpenToUpdate,

@@ -7,7 +7,15 @@
       >
         <div class="icon-arrow-left"></div>
       </div>
-      <h2 class="text-[20px] font-bold">Thêm thành phần</h2>
+      <h2 class="text-[20px] font-bold">
+        {{
+          props.type === 'update'
+            ? 'Sửa thành phần'
+            : props.type === 'double'
+              ? 'Nhân bản thành phần'
+              : 'Thêm thành phần'
+        }}
+      </h2>
     </div>
     <div class="w-full flex-1 overflow-y-hidden">
       <div class="h-[calc(100%-44px)] bg-white overflow-y-auto rounded-[6px] p-10">
@@ -260,6 +268,10 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  isOpen: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const toast = useToast()
@@ -268,10 +280,10 @@ const emit = defineEmits(['close', 'refresh', 'confirm'])
 
 const { schema, getSalaryCompositionInitialValues } = useSalaryCompositionValidation()
 
-const { handleSubmit, setFieldValue, values, resetForm } = useForm({
+const { setValues, handleSubmit, setFieldValue, values, resetForm } = useForm({
   validationSchema: schema,
   // keepValuesOnUnmount: true,
-  initialValues: getSalaryCompositionInitialValues(),
+  initialValues: getSalaryCompositionInitialValues(props.type, props.salaryCompositionDetail),
 })
 
 watch(
@@ -326,6 +338,27 @@ watch(
       setFieldValue('autoSumOrgLevel', 4)
     }
   },
+)
+
+watch(
+  [() => props.isOpen, () => props.type, () => props.salaryCompositionDetail],
+  ([isOpen, type, detail]) => {
+    if (isOpen) {
+      if (type === 'create') {
+        setValues({
+          ...getSalaryCompositionInitialValues(type, detail),
+        })
+      } else if (type === 'update' || type === 'double') {
+        if (detail) {
+          setValues({
+            ...detail,
+            salaryCompositionCode: type === 'update' ? detail?.salaryCompositionCode : '',
+          })
+        }
+      }
+    }
+  },
+  { immediate: true },
 )
 
 const showToast = (severity, summary, detail) => {

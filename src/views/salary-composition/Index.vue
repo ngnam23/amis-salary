@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import MsTable from '@/components/ms-table/MsTable.vue'
@@ -39,16 +40,6 @@ const activeTypeSelectOptions = [
   { label: 'Tất cả', value: -1 },
   { label: 'Đang sử dụng', value: 1 },
   { label: 'Ngừng sử dụng', value: 0 },
-]
-
-/**
- * Lấy danh sách các tùy chọn hành động cho từng dòng dữ liệu trong bảng
- * @param {Object} row - Đối tượng dữ liệu của một nhân viên
- */
-const getRowOptions = (row) => [
-  { label: 'Nhân bản', value: 'double' },
-  { label: 'Xóa', value: 'delete' },
-  { label: row.isActive ? 'Ngừng sử dụng' : 'Sử dụng', value: 'toggleStatus' },
 ]
 
 const {
@@ -102,10 +93,9 @@ const handleNextPage = () => {
   }
 }
 
-const isOpenCustomColumnDrawer = ref(false)
+// const isOpenCustomColumnDrawer = ref(false)
 
 const selectedIdsArray = ref([])
-const actionHeadIndex = ref(null)
 
 /**
  * Cập nhật danh sách các ID được chọn trong bảng
@@ -119,15 +109,24 @@ const resetSelectedIds = () => {
   selectedIdsArray.value = []
 }
 
+const {
+  isOpenSalaryCompositionGrid,
+  type,
+  salaryCompositionDetail,
+  handleOpenCreate,
+  handleSaveAndAdd,
+  handleOpenToUpdate,
+  handleOpenToDouble,
+} = useSalaryCompositionGrid()
+
 const { handleActionAll, handleRowSelect } = useSalaryActions(
   rows,
   selectedIdsArray,
   getData,
   resetSelectedIds,
+  handleOpenToUpdate,
+  handleOpenToDouble,
 )
-
-const { isOpenSalaryCompositionGrid, type, handleOpenCreate, handleSaveAndAdd } =
-  useSalaryCompositionGrid()
 
 watch(
   [pageIndex, isActive],
@@ -250,11 +249,13 @@ onMounted(() => {
                     </div>
                     <div
                       class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
+                      @click="() => handleRowSelect('double', row)"
                     >
                       <div class="icon-copy"></div>
                     </div>
                     <div
                       class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
+                      @click="() => handleRowSelect('update', row)"
                     >
                       <div class="icon-pencil"></div>
                     </div>
@@ -296,7 +297,9 @@ onMounted(() => {
     </div>
     <SalaryCompositionGrid
       v-if="isOpenSalaryCompositionGrid"
+      :salary-composition-detail="salaryCompositionDetail"
       :type="type"
+      :isOpen="isOpenSalaryCompositionGrid"
       @close="isOpenSalaryCompositionGrid = false"
       @refresh="getData"
       @confirm="handleSaveAndAdd"

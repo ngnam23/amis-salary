@@ -27,8 +27,10 @@ export const useSalaryCompositionValidation = () => {
     generatingSource: yup.number().nullable(),
   })
 
-  const getSalaryCompositionInitialValues = () => {
+  const getSalaryCompositionInitialValues = (type, salaryCompositionDetail) => {
     return {
+      salaryCompositionCode:
+        type === 'update' ? salaryCompositionDetail?.salaryCompositionCode : '',
       compositionNature: 1,
       taxable: 1,
       isTaxDeductions: false,
