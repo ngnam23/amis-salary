@@ -252,7 +252,7 @@ import {
   ValueType,
 } from '@/constants/common'
 import { useForm } from 'vee-validate'
-import { watch } from 'vue'
+import { watch, nextTick } from 'vue'
 import SelectRelatedComposition from './SelectRelatedComposition.vue'
 import http from '@/utils/http.js'
 import { listApi } from '@/constants/list-api.js'
@@ -285,10 +285,12 @@ const { setValues, handleSubmit, setFieldValue, values, resetForm } = useForm({
   // keepValuesOnUnmount: true,
   initialValues: getSalaryCompositionInitialValues(props.type, props.salaryCompositionDetail),
 })
+let isInitializing = false
 
 watch(
   () => values.compositionType,
   (newVal) => {
+    if (isInitializing) return
     if (newVal === 2 || newVal === 4 || newVal === 5) {
       setFieldValue('compositionNature', 3)
       setFieldValue('valueType', 3)
@@ -302,6 +304,7 @@ watch(
 watch(
   () => values.compositionNature,
   (newVal) => {
+    if (isInitializing) return
     if (newVal === 1) {
       setFieldValue('taxable', 1)
       setFieldValue('isOverNorms', false)
@@ -319,6 +322,7 @@ watch(
 watch(
   () => values.valueCalculationType,
   (newVal) => {
+    if (isInitializing) return
     if (newVal === 1) {
       setFieldValue('sumScope', 1)
       setFieldValue('relatedCompositionId', null)
@@ -334,6 +338,7 @@ watch(
 watch(
   () => values.sumScope,
   (newVal) => {
+    if (isInitializing) return
     if (newVal === 3) {
       setFieldValue('autoSumOrgLevel', 4)
     }
@@ -342,8 +347,9 @@ watch(
 
 watch(
   [() => props.isOpen, () => props.type, () => props.salaryCompositionDetail],
-  ([isOpen, type, detail]) => {
+  async ([isOpen, type, detail]) => {
     if (isOpen) {
+      isInitializing = true
       if (type === 'create') {
         setValues({
           ...getSalaryCompositionInitialValues(type, detail),
@@ -356,6 +362,8 @@ watch(
           })
         }
       }
+      await nextTick()
+      isInitializing = false
     }
   },
   { immediate: true },
