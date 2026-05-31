@@ -126,7 +126,8 @@ const { handleActionAll, handleRowSelect } = useSalaryActions(
   resetSelectedIds,
 )
 
-const { isOpenSalaryCompositionGrid, type, handleOpenCreate } = useSalaryCompositionGrid()
+const { isOpenSalaryCompositionGrid, type, handleOpenCreate, handleSaveAndAdd } =
+  useSalaryCompositionGrid()
 
 watch(
   [pageIndex, isActive],
@@ -298,6 +299,7 @@ onMounted(() => {
       :type="type"
       @close="isOpenSalaryCompositionGrid = false"
       @refresh="getData"
+      @confirm="handleSaveAndAdd"
     />
   </div>
 </template>

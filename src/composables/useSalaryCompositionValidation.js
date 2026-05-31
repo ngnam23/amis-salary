@@ -38,7 +38,7 @@ export const useSalaryCompositionValidation = () => {
       valueCalculationType: 2,
       sumScope: 1,
       autoSumOrgLevel: 4,
-      relatedCompositionId: '',
+      relatedCompositionId: null,
       formula: '',
       description: '',
       optionShowPaycheck: 1,

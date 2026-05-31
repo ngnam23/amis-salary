@@ -8,10 +8,16 @@ import ConfirmDialog from 'primevue/confirmdialog'
   <Toast position="top-center" group="toast-alert" @close="visible = false">
     <template #container="{ message, closeCallback }">
       <div
-        class="flex justify-between items-center w-[300px] bg-[#12B76A] text-white py-2 min-h-8 border-none rounded-[8px]"
+        :class="[
+          'flex justify-between items-center w-[300px] text-white py-2 min-h-8 border-none rounded-[8px]',
+          message.severity === 'success' ? 'bg-[#12B76A]' : 'bg-[#F04438]',
+        ]"
       >
         <div class="px-3 flex items-center gap-x-2">
-          <div class="pi pi-check" style="font-size: 16px"></div>
+          <div
+            :class="[message.severity === 'success' ? 'pi pi-check' : 'pi pi-exclamation-circle']"
+            style="font-size: 16px"
+          ></div>
           <p>{{ message.detail }}</p>
         </div>
         <div class="flex items-center justify-center w-8 h-8 cursor-pointer" @click="closeCallback">

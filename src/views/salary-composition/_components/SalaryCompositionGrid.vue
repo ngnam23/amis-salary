@@ -3,6 +3,7 @@
     <div class="flex items-center h-9 mb-[14px]">
       <div
         class="w-9 h-9 mr-2 rounded-full flex items-center justify-center hover:bg-[#dadce3] cursor-pointer"
+        @click="$emit('close')"
       >
         <div class="icon-arrow-left"></div>
       </div>
@@ -214,7 +215,8 @@
         <MsButtonBase label="Hủy bỏ" class="w-20" />
         <MsButtonBase
           label="Lưu và thêm"
-          class="border !border-[#0E9A62] text-[#0E9A62] hover:!bg-[#A8D9C8]"
+          class="border !border-[#0E9A62] !text-[#0E9A62] hover:!bg-[#A8D9C8]"
+          @click="handleSaveContinue"
         />
         <MsButtonBase
           label="Lưu"
@@ -262,7 +264,7 @@ const props = defineProps({
 
 const toast = useToast()
 
-const emit = defineEmits(['close', 'refresh'])
+const emit = defineEmits(['close', 'refresh', 'confirm'])
 
 const { schema, getSalaryCompositionInitialValues } = useSalaryCompositionValidation()
 
@@ -363,7 +365,26 @@ const handleSave = handleSubmit(async (values) => {
       emit('refresh')
     }
   } catch (error) {
-    showToast('error', 'Lỗi', error.message || 'Có lỗi xảy ra, hãy thử lại')
+    showToast('error', 'Lỗi', error?.data?.devMessage || 'Có lỗi xảy ra, hãy thử lại')
+  }
+})
+
+// Hàm xử lý lưu và thêm mới tiếp
+const handleSaveContinue = handleSubmit(async (values) => {
+  try {
+    const response = await executeSaveAPI(values)
+    if (response.isSuccess) {
+      showToast(
+        'success',
+        'Thành công',
+        `${props.type === 'update' ? 'Cập nhật' : 'Thêm'} thành công`,
+      )
+      emit('refresh')
+      resetForm()
+      emit('confirm')
+    }
+  } catch (error) {
+    showToast('error', 'Lỗi', error?.data?.devMessage || 'Có lỗi xảy ra, hãy thử lại')
   }
 })
 </script>
