@@ -10,10 +10,8 @@
       <h2 class="text-[20px] font-bold">
         {{
           props.type === 'update'
-            ? 'Sửa thành phần'
-            : props.type === 'double'
-              ? 'Nhân bản thành phần'
-              : 'Thêm thành phần'
+            ? `${props.salaryCompositionDetail?.salaryCompositionName}`
+            : 'Thêm thành phần'
         }}
       </h2>
     </div>
