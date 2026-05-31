@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, watch } from 'vue'
 import http from '@/utils/http'
 import { Select } from 'primevue'
 import { useField } from 'vee-validate'
@@ -38,6 +38,36 @@ const hasMore = ref(true)
 
 // Create a unique class name for this instance's overlay to target it in the DOM
 const uniqueId = `select-overlay-${Math.random().toString(36).substring(2, 9)}`
+
+const fetchSelectedOption = async (val) => {
+  if (!val) return
+  // Check if it's already in options
+  if (options.value.some((opt) => opt[props.optionValue] === val)) return
+
+  try {
+    const response = await http.get(`${listApi.SalaryCompositions}/${val}`)
+    if (response.isSuccess && response.data) {
+      const item = response.data
+      const option = {
+        ...item,
+        salaryCompositionLabel: `${item.salaryCompositionName} (${item.salaryCompositionCode})`,
+      }
+      options.value.push(option)
+    }
+  } catch (error) {
+    console.error('Error fetching selected option detail:', error)
+  }
+}
+
+watch(
+  () => value.value,
+  async (newVal) => {
+    if (newVal) {
+      await fetchSelectedOption(newVal)
+    }
+  },
+  { immediate: true }
+)
 
 const getData = async () => {
   if (isLoading.value) return

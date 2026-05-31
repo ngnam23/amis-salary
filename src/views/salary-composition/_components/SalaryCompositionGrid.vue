@@ -359,6 +359,7 @@ watch(
           setValues({
             ...detail,
             salaryCompositionCode: type === 'update' ? detail?.salaryCompositionCode : '',
+            salaryCompositionName: type === 'update' ? detail?.salaryCompositionName : '',
           })
         }
       }
