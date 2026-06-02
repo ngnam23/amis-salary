@@ -15,8 +15,6 @@
   "dependencies": {
     "@primeuix/themes": "^2.0.3",
     "axios": "^1.13.5",
-    "devextreme": "25.2.7",
-    "devextreme-vue": "25.2.7",
     "pinia": "^3.0.4",
     "primeicons": "^7.0.0",
     "primevue": "^4.5.4",
@@ -43,8 +41,7 @@
     "prettier": "3.8.3",
     "tailwindcss": "^3.4.1",
     "vite": "^8.0.8",
-    "vite-plugin-vue-devtools": "^8.1.1",
-    "devextreme-themebuilder": "25.2.7"
+    "vite-plugin-vue-devtools": "^8.1.1"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"

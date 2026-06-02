@@ -38,3 +38,25 @@ body {
     border-width: 0 !important;
   }
 }
+.p-checkbox-checked .p-checkbox-box {
+  background: #0e9a62 !important;
+  border-color: #0e9a62 !important;
+}
+
+.p-treeselect-overlay .p-tree {
+  padding: 4px 0 !important;
+}
+.p-treeselect-overlay {
+  border-radius: 8px !important;
+  border: 1px solid #d5d7da !important;
+}
+.p-treeselect-label {
+  padding: 3px 4px !important;
+}
+.p-treeselect-label-container,
+.p-treeselect-label {
+  height: 100% !important;
+}
+.p-tree-root-children {
+  padding-block-start: 0 !important;
+}

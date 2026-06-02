@@ -1,5 +1,3 @@
-import 'devextreme/dist/css/dx.light.css'
-import 'devextreme/dist/css/dx.light.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
@@ -10,7 +8,6 @@ import ConfirmationService from 'primevue/confirmationservice'
 
 import '@/assets/styles/app.scss'
 import 'primeicons/primeicons.css'
-import 'devextreme/dist/css/dx.fluent.blue.light.css'
 
 import App from '@/App.vue'
 import router from '@/router'

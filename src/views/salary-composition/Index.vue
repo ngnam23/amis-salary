@@ -14,6 +14,7 @@ import MsSelect from '@/components/ms-select/MsSelect.vue'
 import { useSalaryActions } from '@/composables/useSalaryActions'
 import { useSalaryCompositionGrid } from '@/composables/useSalaryCompositionGrid'
 import SalaryCompositionGrid from './_components/SalaryCompositionGrid.vue'
+import UnitDropdownBox from './_components/UnitDropdownBox.vue'
 
 const batchActionOptions = [
   {
@@ -190,7 +191,7 @@ onMounted(() => {
                 <InputText
                   v-model="keyword"
                   placeholder="Tìm kiếm"
-                  class="!h-8 !rounded-[8px] !text-[13px]"
+                  class="!h-8 !rounded-[8px] !text-[13px] font-normal hover:!border-[#0E9A62] focus:!border-[#0E9A62] placeholder:!text-[#9e9e9e]"
                 />
               </IconField>
               <div v-if="selectedIdsArray.length <= 0" class="flex items-center gap-x-2">
@@ -199,6 +200,7 @@ onMounted(() => {
                   :options="activeTypeSelectOptions"
                   prefix-label="Trạng thái:"
                 />
+                <UnitDropdownBox />
               </div>
               <div v-else class="flex items-center gap-x-4">
                 <div class="flex items-center gap-x-4">

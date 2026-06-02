@@ -123,8 +123,12 @@ onBeforeUnmount(() => {
   transition: border-color 0.2s;
 }
 
+.select-trigger:hover {
+  background-color: #e9eaeb;
+}
+
 .select-trigger.open {
-  border-color: #0e9a62;
+  border-color: #d5d7da;
 }
 
 .select-trigger-text {

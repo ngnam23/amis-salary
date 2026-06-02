@@ -1,75 +1,150 @@
 <template>
-  <div class="dx-fieldset">
-    <div class="dx-field">
-      <div class="dx-field-value">
-        <DxDropDownBox
-          v-model:value="treeBoxValue"
-          :value-expr="'id'"
-          :display-expr="'text'"
-          :placeholder="'Tất cả đơn vị'"
-          :show-clear-button="true"
-          :data-source="treeDataSource"
-          @value-changed="syncTreeViewSelection"
-        >
-          <template #content>
-            <DxTreeView
-              :data-source="treeDataSource"
-              :select-by-click="true"
-              :selection-mode="'multiple'"
-              :show-checkboxes-mode="'normal'"
-              :key-expr="'id'"
-              :parent-id-expr="'parentId'"
-              :display-expr="'text'"
-              :select-nodes-recursive="true"
-              @selection-changed="treeViewSelectionChanged"
-              @content-ready="syncTreeViewSelection"
-              ref="treeViewRef"
-            />
-          </template>
-        </DxDropDownBox>
-      </div>
-    </div>
+  <div class="card flex justify-center">
+    <TreeSelect
+      v-model="selectedValue"
+      size="small"
+      :options="nodes"
+      selectionMode="checkbox"
+      placeholder="Tất cả đơn vị"
+      display="chip"
+      class="w-[350px] !h-8 !rounded-[8px] !text-[13px] font-normal hover:!border-[#0E9A62] focus:!border-[#0E9A62] placeholder:!text-[#9e9e9e]"
+    >
+      <template #value="slotProps">
+        <div v-if="displayNodes.length > 0" class="flex w-full overflow-hidden gap-x-1">
+          <div
+            v-for="node in displayNodes"
+            :key="node.key"
+            class="flex items-center bg-[#F5F5F5] gap-x-1 py-0 px-2 rounded-[6px] font-medium border border-[#D5D7DA] text-[12px] text-[#101828] h-6"
+          >
+            <span>{{ node.label }}</span>
+            <i class="pi pi-times" style="font-size: 12px" @click.stop="removeNode(node.key)"></i>
+          </div>
+        </div>
+        <span v-else class="!text-[13px] text-[#9e9e9e] ml-2">
+          {{ slotProps.placeholder }}
+        </span>
+      </template>
+      <template #dropdownicon>
+        <div class="icon-chevron-down"></div>
+      </template>
+      <template #option="{ node, selected }">
+        <div :class="['text-[13px]', selected ? 'text-[#0e9a62]' : 'text-[#101828]']">
+          {{ node.label }}
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex items-center py-3 px-4 !bg-[#eafbf2] gap-x-2 h-8">
+          <Checkbox binary size="small" />
+          <label class="font-normal text-[#101828]">Hiển thị đơn vị ngừng theo dõi</label>
+        </div>
+      </template>
+    </TreeSelect>
   </div>
 </template>
 
 <script setup>
+import { Checkbox, TreeSelect } from 'primevue'
 import { ref, computed } from 'vue'
-import { DxDropDownBox } from 'devextreme-vue/drop-down-box'
-import { DxTreeView } from 'devextreme-vue/tree-view'
 
-// 1. Khởi tạo dữ liệu dạng phẳng (Flat List) với ID và ParentID
-const organizationalData = [
-  { id: 1, text: 'Misa Test pdthien 2024', parentId: 0 },
-  { id: 2, text: 'Chi nhánh miền Bắc', parentId: 1 },
-  { id: 3, text: 'Chi nhánh miền Nam', parentId: 1 },
-]
+const nodes = ref([
+  {
+    key: '0',
+    label: 'Misa Test pdthien 2024',
+    data: 'Documents Folder',
+    children: [
+      {
+        key: '0-0',
+        label: 'Chi nhánh miền Bắc',
+        data: 'Work Folder',
+        children: [
+          {
+            key: '0-0-0',
+            label: 'Khối sản xuất',
+            data: 'Expenses Document',
+            children: [
+              {
+                key: '0-0-0-0',
+                label: 'Dự án Core',
+                data: 'Expenses Document',
+              },
+              {
+                key: '0-0-0-1',
+                label: 'Dự án C&B',
+                data: 'Resume Document',
+              },
+            ],
+          },
+          { key: '0-0-1', label: 'Trung tâm kinh doanh', data: 'Resume Document' },
+          { key: '0-0-2', label: 'Trung tâm hỗ trợ khách hàng', data: 'Resume Document' },
+        ],
+      },
+      {
+        key: '0-1',
+        label: 'Chi nhánh miền Bắc',
+        data: 'Home Folder',
+        children: [
+          {
+            key: '0-1-0',
+            label: 'Trung tâm kinh doanh',
+            data: 'Invoices for this month',
+          },
+        ],
+      },
+    ],
+  },
+])
+const selectedValue = ref(null)
 
-// 2. State lưu trữ danh sách các ID được chọn (ví dụ chọn nhiều: [2, 3])
-const treeBoxValue = ref([1, 2, 3])
-const treeViewRef = ref(null)
+const displayNodes = computed(() => {
+  if (!selectedValue.value || !nodes.value) return []
 
-const treeDataSource = computed(() => organizationalData)
-
-// 3. Đồng bộ khi người dùng tích chọn trên TreeView -> Cập nhật lên DropDownBox
-const treeViewSelectionChanged = (e) => {
-  const treeView = e.component
-  // Lấy danh sách các node được chọn
-  const selectedNodes = treeView.getSelectedNodes()
-  // Map lại để chỉ lấy mảng các ID
-  treeBoxValue.value = selectedNodes.map((node) => node.itemData.id)
-}
-
-// 4. Đồng bộ ngược lại khi giá trị DropDownBox thay đổi hoặc khi load xong giao diện
-const syncTreeViewSelection = (e) => {
-  const treeView = treeViewRef.value?.instance || e?.component
-  if (!treeView) return
-
-  // Xóa các lựa chọn cũ và set lại theo giá trị hiện tại của treeBoxValue
-  treeView.unselectAll()
-  if (treeBoxValue.value) {
-    treeBoxValue.value.forEach((id) => {
-      treeView.selectItem(id)
-    })
+  const result = []
+  const traverse = (treeNodes) => {
+    for (const node of treeNodes) {
+      if (selectedValue.value[node.key] && selectedValue.value[node.key].checked) {
+        result.push(node)
+      } else if (node.children) {
+        traverse(node.children)
+      }
+    }
   }
+  traverse(nodes.value)
+  return result
+})
+
+const removeNode = (targetKey) => {
+  if (!selectedValue.value) return
+
+  const newSelected = { ...selectedValue.value }
+
+  const removeDescendants = (node) => {
+    delete newSelected[node.key]
+    if (node.children) {
+      node.children.forEach(removeDescendants)
+    }
+  }
+
+  const findAndRemove = (treeNodes, path) => {
+    for (const node of treeNodes) {
+      if (node.key === targetKey) {
+        path.forEach((ancestor) => {
+          delete newSelected[ancestor.key]
+        })
+        removeDescendants(node)
+        return true
+      }
+      if (node.children) {
+        if (findAndRemove(node.children, [...path, node])) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  findAndRemove(nodes.value, [])
+  selectedValue.value = newSelected
 }
 </script>
+
+<style scoped lang="scss"></style>
