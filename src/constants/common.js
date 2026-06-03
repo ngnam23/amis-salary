@@ -39,7 +39,7 @@ export const SIDEBAR_MENU = [
 export const SALARY_COMPOSITION_FIELDS = [
   { key: 'salaryCompositionCode', label: 'Mã thành phần', width: 200, display: true },
   { key: 'salaryCompositionName', label: 'Tên thành phần', width: 200, display: true },
-  { key: '', label: 'Đơn vị áp dụng', width: 200, display: true },
+  { key: 'organizationIds', label: 'Đơn vị áp dụng', width: 200, display: true },
   { key: 'compositionType', label: 'Loại thành phần', width: 200, display: true },
   { key: 'compositionNature', label: 'Tính chất', width: 200, display: true },
   { key: 'taxable', label: 'Chịu thuế', width: 200, display: true },

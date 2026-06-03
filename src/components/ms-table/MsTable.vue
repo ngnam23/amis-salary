@@ -93,6 +93,9 @@
               </div>
             </div>
           </template>
+          <template v-else-if="field.key === 'organizationIds'">
+            <span class="!truncate line-clamp-1">{{ row.organizationName }}</span>
+          </template>
           <template v-else>
             <span class="!truncate line-clamp-1">{{ row[field.key] }}</span>
           </template>
