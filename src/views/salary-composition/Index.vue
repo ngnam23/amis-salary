@@ -120,14 +120,32 @@ const {
   handleOpenToDouble,
 } = useSalaryCompositionGrid()
 
-const { handleActionAll, handleRowSelect } = useSalaryActions(
-  rows,
-  selectedIdsArray,
-  getData,
-  resetSelectedIds,
-  handleOpenToUpdate,
-  handleOpenToDouble,
-)
+const { handleActionAll, handleRowSelect, showConfirm, handleDeleteSalaryComposition } =
+  useSalaryActions(
+    rows,
+    selectedIdsArray,
+    getData,
+    resetSelectedIds,
+    handleOpenToUpdate,
+    handleOpenToDouble,
+  )
+
+const handleMoreDelete = (detail) => {
+  showConfirm(
+    `Bạn có chắc chắn muốn xóa thành phần lương ${detail.salaryCompositionName} không?`,
+    () => {
+      const isSuccess = handleDeleteSalaryComposition([detail.salaryCompositionId])
+      if (isSuccess) {
+        isOpenSalaryCompositionGrid.value = false
+      }
+    },
+    'Thông báo',
+    'Xóa',
+    'Hủy',
+    '!bg-[#F04438] !border-[#F04438] hover:!bg-[#D92D20]',
+    '',
+  )
+}
 
 watch(
   [pageIndex, isActive],
@@ -305,6 +323,8 @@ onMounted(() => {
       @close="isOpenSalaryCompositionGrid = false"
       @refresh="getData"
       @confirm="handleSaveAndAdd"
+      @more-double="(id) => handleOpenToDouble(id)"
+      @more-delete="handleMoreDelete"
     />
   </div>
 </template>

@@ -69,12 +69,15 @@ export const useSalaryActions = (
       if (response.isSuccess) {
         showToast('success', 'Thành công', 'Xóa thành công')
         getData()
+        resetSelectedIds()
+        return true
       }
     } catch (error) {
       console.error('Error:', error)
       showToast('error', 'Lỗi', error.message || 'Đã xảy ra lỗi')
+      resetSelectedIds()
+      return false
     }
-    resetSelectedIds()
   }
 
   /**
@@ -172,5 +175,6 @@ export const useSalaryActions = (
     handleActionAll,
     handleRowSelect,
     showToast,
+    showConfirm,
   }
 }

@@ -314,7 +314,7 @@ const props = defineProps({
 
 const toast = useToast()
 
-const emit = defineEmits(['close', 'refresh', 'confirm'])
+const emit = defineEmits(['close', 'refresh', 'confirm', 'more-double', 'more-delete'])
 
 const { schema, getSalaryCompositionInitialValues } = useSalaryCompositionValidation()
 
@@ -331,10 +331,16 @@ const items = ref([
       {
         label: 'Nhân bản',
         icon: 'icon-copy',
+        command: () => {
+          emit('more-double', props.salaryCompositionDetail.salaryCompositionId)
+        },
       },
       {
         label: 'Xóa',
         icon: 'icon-trash-red',
+        command: () => {
+          emit('more-delete', props.salaryCompositionDetail)
+        },
       },
     ],
   },
