@@ -107,3 +107,14 @@ body {
   outline: none !important;
   outline-offset: 0px !important;
 }
+
+.p-menu-list {
+  padding: 8px 0 !important;
+}
+.p-menu {
+  border-radius: 8px !important;
+  min-width: 160px !important;
+}
+.p-menu-submenu-label {
+  display: none !important;
+}

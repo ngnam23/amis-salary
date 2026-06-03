@@ -1,22 +1,57 @@
 <template>
   <div class="flex flex-col w-full h-full">
-    <div class="flex items-center h-9 mb-[14px]">
-      <div
-        class="w-9 h-9 mr-2 rounded-full flex items-center justify-center hover:bg-[#dadce3] cursor-pointer"
-        @click="$emit('close')"
-      >
-        <div class="icon-arrow-left"></div>
+    <div class="flex items-center justify-between h-9 mb-[14px]">
+      <div class="flex items-center">
+        <div
+          class="w-9 h-9 mr-2 rounded-full flex items-center justify-center hover:bg-[#dadce3] cursor-pointer"
+          @click="$emit('close')"
+        >
+          <div class="icon-arrow-left"></div>
+        </div>
+        <h2 class="text-[20px] font-bold">
+          {{
+            props.type === 'update'
+              ? `${props.salaryCompositionDetail?.salaryCompositionName}`
+              : 'Thêm thành phần'
+          }}
+        </h2>
       </div>
-      <h2 class="text-[20px] font-bold">
-        {{
-          props.type === 'update'
-            ? `${props.salaryCompositionDetail?.salaryCompositionName}`
-            : 'Thêm thành phần'
-        }}
-      </h2>
+      <div v-if="type === 'update'" class="flex items-center gap-2">
+        <MsButtonBase label="Hủy bỏ" class="w-20" />
+        <MsButtonBase
+          label="Lưu"
+          class="w-20 !bg-[#0E9A62] text-white !border-[#0E9A62] hover:!bg-[#0A724B]"
+          @click="handleSave"
+        />
+        <div class="card flex justify-center">
+          <Button
+            type="button"
+            icon="pi pi-ellipsis-h"
+            @click="toggleMoreAction"
+            aria-haspopup="true"
+            aria-controls="overlay_menu"
+            class="!h-8 !rounded-[8px] !flex !justify-center !items-center !px-3 !text-[#101828] !bg-white !border !border-[#D5D7DA] hover:!bg-[#E9EAEB]"
+          />
+          <Menu ref="menuMore" id="overlay_menu" :model="items" :popup="true">
+            <template #item="{ item }">
+              <div
+                class="h-8 px-3 flex items-center gap-x-2 rounded-[4px] hover:bg-[#E9EAEB] cursor-pointer"
+              >
+                <div :class="item.icon"></div>
+                <span class="text-[#101828] font-normal">{{ item.label }}</span>
+              </div>
+            </template>
+          </Menu>
+        </div>
+      </div>
     </div>
     <div class="w-full flex-1 overflow-y-hidden">
-      <div class="h-[calc(100%-44px)] bg-white overflow-y-auto rounded-[6px] p-10">
+      <div
+        :class="[
+          'bg-white overflow-y-auto rounded-[6px] p-10',
+          type === 'create' || type === 'double' ? 'h-[calc(100%-44px)]' : 'h-full',
+        ]"
+      >
         <div class="grid grid-cols-12 mb-4">
           <div class="col-span-2 h-8 flex items-center">
             <p class="font-normal">Tên thành phần <span class="text-[red]">*</span></p>
@@ -217,7 +252,10 @@
           </div>
         </div>
       </div>
-      <div class="pt-3 flex items-center gap-x-2 justify-end">
+      <div
+        v-if="type === 'create' || type === 'double'"
+        class="pt-3 flex items-center gap-x-2 justify-end"
+      >
         <MsButtonBase label="Hủy bỏ" class="w-20" />
         <MsButtonBase
           label="Lưu và thêm"
@@ -250,13 +288,14 @@ import {
   ValueType,
 } from '@/constants/common'
 import { useForm } from 'vee-validate'
-import { watch, nextTick } from 'vue'
+import { watch, nextTick, ref } from 'vue'
 import SelectRelatedComposition from './SelectRelatedComposition.vue'
 import http from '@/utils/http.js'
 import { listApi } from '@/constants/list-api.js'
 import { useToast } from 'primevue/usetoast'
 import { convertToCode } from '@/utils/common.js'
 import UnitDropdownBox from './UnitDropdownBox.vue'
+import { Button, Menu } from 'primevue'
 
 const props = defineProps({
   type: {
@@ -285,6 +324,26 @@ const { setValues, handleSubmit, setFieldValue, values, resetForm } = useForm({
   initialValues: getSalaryCompositionInitialValues(props.type, props.salaryCompositionDetail),
 })
 let isInitializing = false
+
+const items = ref([
+  {
+    items: [
+      {
+        label: 'Nhân bản',
+        icon: 'icon-copy',
+      },
+      {
+        label: 'Xóa',
+        icon: 'icon-trash-red',
+      },
+    ],
+  },
+])
+
+const menuMore = ref()
+const toggleMoreAction = (event) => {
+  menuMore.value.toggle(event)
+}
 
 watch(
   () => values.compositionType,
