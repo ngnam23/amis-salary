@@ -25,6 +25,7 @@ export const useSalaryCompositionValidation = () => {
     description: yup.string().nullable(),
     optionShowPaycheck: yup.number().nullable(),
     generatingSource: yup.number().nullable(),
+    selectedOrganizationIds: yup.object().required('Không được để trống'),
   })
 
   const getSalaryCompositionInitialValues = (type, salaryCompositionDetail) => {

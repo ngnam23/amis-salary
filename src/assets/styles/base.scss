@@ -57,6 +57,53 @@ body {
 .p-treeselect-label {
   height: 100% !important;
 }
-.p-tree-root-children {
-  padding-block-start: 0 !important;
+.p-tree-root-children,
+.p-tree-node-children {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+@for $i from 1 through 10 {
+  .p-tree-node[aria-level='#{$i}'] > .p-tree-node-content {
+    padding-left: calc(0.5rem + (#{$i} - 1) * 1.5rem) !important;
+    border-radius: 0 !important;
+    height: 32px;
+
+    &:hover {
+      background-color: #e9eaeb !important;
+    }
+
+    &:has(.p-checkbox-checked) {
+      background-color: #edfcf4 !important;
+    }
+
+    &:has(.p-checkbox-checked):hover {
+      background-color: #cdeadf !important;
+    }
+
+    & .p-checkbox,
+    & .p-checkbox-box {
+      width: 16px !important;
+      height: 16px !important;
+    }
+
+    & .p-checkbox-icon {
+      width: 10px !important;
+      height: 10px !important;
+    }
+  }
+}
+.p-tree-node-toggle-button {
+  width: 16px !important;
+  height: 20px !important;
+  margin-right: 5px !important;
+
+  &:hover {
+    background-color: unset !important;
+  }
+}
+.p-tree-node:focus-visible > .p-tree-node-content {
+  box-shadow: none !important;
+  outline: none !important;
+  outline-offset: 0px !important;
 }

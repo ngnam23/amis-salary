@@ -59,6 +59,7 @@ export const useSalaryCompositionGrid = () => {
    */
   const handleSaveAndAdd = async () => {
     type.value = 'create'
+    salaryCompositionDetail.value = null
   }
 
   return {

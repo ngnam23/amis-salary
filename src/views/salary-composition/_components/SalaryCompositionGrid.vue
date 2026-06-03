@@ -38,7 +38,7 @@
             <p class="font-normal">Đơn vị áp dụng<span class="text-[red]">*</span></p>
           </div>
           <div class="col-span-10">
-            <!-- <UnitDropdownBox /> -->
+            <UnitDropdownBox name="selectedOrganizationIds" />
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
@@ -256,7 +256,7 @@ import http from '@/utils/http.js'
 import { listApi } from '@/constants/list-api.js'
 import { useToast } from 'primevue/usetoast'
 import { convertToCode } from '@/utils/common.js'
-// import UnitDropdownBox from './UnitDropdownBox.vue'
+import UnitDropdownBox from './UnitDropdownBox.vue'
 
 const props = defineProps({
   type: {
@@ -391,9 +391,14 @@ const showToast = (severity, summary, detail) => {
 
 // Hàm dùng chung để lưu dữ liệu lên Server
 const executeSaveAPI = async (values) => {
-  let submitValues = { ...values }
+  let submitValues = {
+    ...values,
+    selectedOrganizationIds: Object.entries(values.selectedOrganizationIds || {})
+      .filter(([_, state]) => state.checked)
+      .map(([key]) => key),
+  }
 
-  if (props.type === 'double') {
+  if (props.type === 'double' || props.type === 'create') {
     delete submitValues?.salaryCompositionId
   }
 
