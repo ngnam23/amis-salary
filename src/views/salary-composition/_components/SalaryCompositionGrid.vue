@@ -365,6 +365,7 @@ watch(
   async ([isOpen, type, detail]) => {
     if (isOpen) {
       isInitializing = true
+      console.log(type, detail)
       if (type === 'create') {
         setValues({
           ...getSalaryCompositionInitialValues(type, detail),
@@ -442,8 +443,10 @@ const handleSaveContinue = handleSubmit(async (values) => {
         `${props.type === 'update' ? 'Cập nhật' : 'Thêm'} thành công`,
       )
       emit('refresh')
-      resetForm()
       emit('confirm')
+      resetForm({
+        values: getSalaryCompositionInitialValues(props.type, props.salaryCompositionDetail),
+      })
     }
   } catch (error) {
     showToast('error', 'Lỗi', error?.data?.devMessage || 'Có lỗi xảy ra, hãy thử lại')
