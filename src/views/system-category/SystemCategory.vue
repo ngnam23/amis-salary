@@ -11,6 +11,12 @@ import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
 import MsSelect from '@/components/ms-select/MsSelect.vue'
 import { useSalarySystemTable } from '@/composables/useSalarySystemTable'
+import http from '@/utils/http'
+import { listApi } from '@/constants/list-api'
+import { useConfirm, useToast } from 'primevue'
+
+const confirm = useConfirm()
+const toast = useToast()
 
 const activeTypeSelectOptions = [
   { value: -1, label: 'Tất cả' },
@@ -37,6 +43,31 @@ const {
   getData,
   debounceGetData,
 } = useSalarySystemTable()
+
+const showToast = (severity, summary, detail) => {
+  toast.add({ group: 'toast-alert', severity, summary, detail, life: 3000 })
+}
+
+const showConfirm = (
+  message,
+  onAccept,
+  header = 'Xác nhận',
+  acceptLabel = 'Đồng ý',
+  rejectLabel = 'Hủy bỏ',
+  acceptClass = '',
+  rejectClass = '',
+) => {
+  confirm.require({
+    group: 'confirm-dialog',
+    header,
+    message,
+    acceptLabel,
+    rejectLabel,
+    acceptClass,
+    rejectClass,
+    accept: onAccept,
+  })
+}
 
 const indexStart = computed(() => (totalItems.value ? (pageIndex.value - 1) * pageSize.value : -1))
 const indexEnd = computed(() =>
@@ -90,6 +121,29 @@ const handleSelectedIds = (selectedIds) => {
 
 const resetSelectedIds = () => {
   selectedIdsArray.value = []
+}
+
+const handleMoveUse = async () => {
+  showConfirm(
+    'Bạn có chắc chắn muốn đưa các thành phần lương mặc định đã chọn vào danh sách sử dụng không?',
+    async () => {
+      const idString =
+        typeof selectedIdsArray.value === 'string'
+          ? selectedIdsArray.value
+          : selectedIdsArray.value.join(',')
+      try {
+        const response = await http.post(`${listApi.SalaryCompositionSystems}/move`, idString)
+
+        if (response.isSuccess) {
+          showToast('success', 'Thành công', 'Thêm thành công')
+          getData()
+        }
+      } catch (error) {
+        showToast('error', 'Lỗi', error.message || 'Đã xảy ra lỗi')
+      }
+    },
+    'Thông báo',
+  )
 }
 
 watch(
@@ -160,7 +214,7 @@ onMounted(() => {
                   </p>
                 </div>
                 <div class="flex items-center gap-x-2">
-                  <MsButtonBase label="Đưa vào danh sách sử dụng">
+                  <MsButtonBase label="Đưa vào danh sách sử dụng" @click="handleMoveUse">
                     <div class="icon-plus"></div>
                   </MsButtonBase>
                 </div>

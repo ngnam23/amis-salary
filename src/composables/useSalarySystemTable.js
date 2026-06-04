@@ -2,10 +2,12 @@ import { listApi } from '@/constants/list-api'
 import { debounce } from '@/utils/debounce'
 import http from '@/utils/http'
 import { ref } from 'vue'
-import { SALARY_COMPOSITION_FIELDS } from '@/constants/common'
+import { SALARY_COMPOSITION_SYSTEM_FIELDS } from '@/constants/common'
 
 const fields = ref(
-  JSON.parse(localStorage.getItem('salaryCompositionFields')) || [...SALARY_COMPOSITION_FIELDS],
+  JSON.parse(localStorage.getItem('salaryCompositionSystemFields')) || [
+    ...SALARY_COMPOSITION_SYSTEM_FIELDS,
+  ],
 )
 
 /**
@@ -14,7 +16,7 @@ const fields = ref(
  */
 const updateFields = (newFields) => {
   fields.value = [...newFields]
-  localStorage.setItem('salaryCompositionFields', JSON.stringify(fields.value))
+  localStorage.setItem('salaryCompositionSystemFields', JSON.stringify(fields.value))
 }
 
 /**

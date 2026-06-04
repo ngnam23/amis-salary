@@ -53,6 +53,20 @@ export const SALARY_COMPOSITION_FIELDS = [
   { key: 'isActive', label: 'Trạng thái', width: 200, display: true },
 ]
 
+export const SALARY_COMPOSITION_SYSTEM_FIELDS = [
+  { key: 'salaryCompositionCode', label: 'Mã thành phần', width: 200, display: true },
+  { key: 'salaryCompositionName', label: 'Tên thành phần', width: 200, display: true },
+  { key: 'compositionType', label: 'Loại thành phần', width: 200, display: true },
+  { key: 'compositionNature', label: 'Tính chất', width: 200, display: true },
+  { key: 'taxable', label: 'Chịu thuế', width: 200, display: true },
+  { key: 'isTaxDeductions', label: 'Giảm trừ khi tính thuế', width: 200, display: true },
+  { key: 'norms', label: 'Định mức', width: 200, display: true },
+  { key: 'valueType', label: 'Kiểu giá trị', width: 200, display: true },
+  { key: 'formula', label: 'Giá trị', width: 200, display: true },
+  { key: 'description', label: 'Mô tả', width: 200, display: true },
+  { key: 'optionShowPaycheck', label: 'Hiển thị trên phiếu lương', width: 200, display: true },
+]
+
 export const CompositionType = [
   { key: 1, label: 'Thông tin nhân viên' },
   { key: 2, label: 'Chấm công' },
