@@ -118,6 +118,7 @@ const {
   handleSaveAndAdd,
   handleOpenToUpdate,
   handleOpenToDouble,
+  handleOpenToDetail,
 } = useSalaryCompositionGrid()
 
 const { handleActionAll, handleRowSelect, showConfirm, handleDeleteSalaryComposition } =
@@ -254,6 +255,7 @@ onMounted(() => {
                 :selected-ids="selectedIdsArray"
                 key-field="salaryCompositionId"
                 @update-selected-ids="handleSelectedIds"
+                @row-click="(row) => handleOpenToDetail(row.salaryCompositionId)"
               >
                 <template #action="{ row }">
                   <div class="flex items-center gap-x-2 justify-center px-3">

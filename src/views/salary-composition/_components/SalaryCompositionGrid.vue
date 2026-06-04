@@ -10,7 +10,7 @@
         </div>
         <h2 class="text-[20px] font-bold">
           {{
-            props.type === 'update'
+            props.type === 'update' || props.type === 'detail'
               ? `${props.salaryCompositionDetail?.salaryCompositionName}`
               : 'Thêm thành phần'
           }}
@@ -57,7 +57,22 @@
             <p class="font-normal">Tên thành phần <span class="text-[red]">*</span></p>
           </div>
           <div class="col-span-10">
-            <MsInput name="salaryCompositionName" />
+            <MsInput v-if="type !== 'detail'" name="salaryCompositionName" />
+            <div
+              v-else
+              class="group flex items-center h-9 justify-between border-b border-[#e3e5ee]"
+            >
+              <p class="flex flex-1 items-center w-full font-normal pl-2">
+                <span class="whitespace-nowrap text-ellipsis overflow-hidden">{{
+                  props.salaryCompositionDetail?.salaryCompositionName
+                }}</span>
+              </p>
+              <div
+                class="group-hover:flex hidden w-9 h-9 rounded-full items-center justify-center hover:bg-[#0000001a] cursor-pointer"
+              >
+                <div class="icon-pencil"></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
@@ -65,7 +80,26 @@
             <p class="font-normal">Mã thành phần <span class="text-[red]">*</span></p>
           </div>
           <div class="col-span-10">
-            <MsInput name="salaryCompositionCode" placeholder="Nhập mã viết liền" />
+            <MsInput
+              v-if="type !== 'detail'"
+              name="salaryCompositionCode"
+              placeholder="Nhập mã viết liền"
+            />
+            <div
+              v-else
+              class="group flex items-center h-9 justify-between border-b border-[#e3e5ee]"
+            >
+              <p class="flex flex-1 items-center w-full font-normal pl-2">
+                <span class="whitespace-nowrap text-ellipsis overflow-hidden">{{
+                  props.salaryCompositionDetail?.salaryCompositionCode
+                }}</span>
+              </p>
+              <div
+                class="group-hover:flex hidden w-9 h-9 rounded-full items-center justify-center hover:bg-[#0000001a] cursor-pointer"
+              >
+                <div class="icon-pencil"></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
@@ -73,7 +107,22 @@
             <p class="font-normal">Đơn vị áp dụng<span class="text-[red]">*</span></p>
           </div>
           <div class="col-span-10">
-            <UnitDropdownBox name="selectedOrganizationIds" />
+            <UnitDropdownBox v-if="type !== 'detail'" name="selectedOrganizationIds" />
+            <div
+              v-else
+              class="group flex items-center h-9 justify-between border-b border-[#e3e5ee]"
+            >
+              <p class="flex flex-1 items-center w-full font-normal pl-2">
+                <span class="whitespace-nowrap text-ellipsis overflow-hidden">{{
+                  props.salaryCompositionDetail?.organizationName
+                }}</span>
+              </p>
+              <div
+                class="group-hover:flex hidden w-9 h-9 rounded-full items-center justify-center hover:bg-[#0000001a] cursor-pointer"
+              >
+                <div class="icon-pencil"></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
@@ -81,7 +130,27 @@
             <p class="font-normal">Loại thành phần<span class="text-[red]">*</span></p>
           </div>
           <div class="col-span-3">
-            <MsSelectControl name="compositionType" :options="CompositionType" class="w-full" />
+            <MsSelectControl
+              v-if="type !== 'detail'"
+              name="compositionType"
+              :options="CompositionType"
+              class="w-full"
+            />
+            <div
+              v-else
+              class="group flex items-center h-9 justify-between border-b border-[#e3e5ee]"
+            >
+              <p class="flex flex-1 items-center w-full font-normal pl-2">
+                <span class="whitespace-nowrap text-ellipsis overflow-hidden">{{
+                  CompositionType[props.salaryCompositionDetail?.compositionType - 1]?.label
+                }}</span>
+              </p>
+              <div
+                class="group-hover:flex hidden w-9 h-9 rounded-full items-center justify-center hover:bg-[#0000001a] cursor-pointer"
+              >
+                <div class="icon-pencil"></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
@@ -89,7 +158,27 @@
             <p class="font-normal">Tính chất<span class="text-[red]">*</span></p>
           </div>
           <div class="col-span-3">
-            <MsSelectControl name="compositionNature" :options="CompositionNature" class="w-full" />
+            <MsSelectControl
+              v-if="type !== 'detail'"
+              name="compositionNature"
+              :options="CompositionNature"
+              class="w-full"
+            />
+            <div
+              v-else
+              class="group flex items-center h-9 justify-between border-b border-[#e3e5ee]"
+            >
+              <p class="flex flex-1 items-center w-full font-normal pl-2">
+                <span class="whitespace-nowrap text-ellipsis overflow-hidden">{{
+                  CompositionNature[props.salaryCompositionDetail?.compositionNature - 1]?.label
+                }}</span>
+              </p>
+              <div
+                class="group-hover:flex hidden w-9 h-9 rounded-full items-center justify-center hover:bg-[#0000001a] cursor-pointer"
+              >
+                <div class="icon-pencil"></div>
+              </div>
+            </div>
           </div>
           <div class="col-span-7 ml-4">
             <div v-if="values.compositionNature === 1" class="flex items-center gap-x-4 h-8">
@@ -435,12 +524,14 @@ watch(
         setValues({
           ...getSalaryCompositionInitialValues(type, detail),
         })
-      } else if (type === 'update' || type === 'double') {
+      } else if (type === 'update' || type === 'double' || type === 'detail') {
         if (detail) {
           setValues({
             ...detail,
-            salaryCompositionCode: type === 'update' ? detail?.salaryCompositionCode : '',
-            salaryCompositionName: type === 'update' ? detail?.salaryCompositionName : '',
+            salaryCompositionCode:
+              type === 'update' || type === 'detail' ? detail?.salaryCompositionCode : '',
+            salaryCompositionName:
+              type === 'update' || type === 'detail' ? detail?.salaryCompositionName : '',
           })
         }
       }

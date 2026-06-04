@@ -23,8 +23,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="row in rows" :key="row.salaryCompositionId" class="relative group bg-white">
-        <td class="!w-[50px] h-9 sticky left-0 z-20 bg-white border-b border-[#D5D7DA]">
+      <tr
+        v-for="row in rows"
+        :key="row.salaryCompositionId"
+        class="relative group bg-white"
+        @click="emit('rowClick', row)"
+      >
+        <td class="!w-[50px] h-9 sticky left-0 z-20 bg-white border-b border-[#D5D7DA]" @click.stop>
           <div class="flex justify-center items-center">
             <Checkbox
               v-model="localSelectedIds"
@@ -102,6 +107,7 @@
         </td>
         <td
           class="w-[200px] h-8 sticky right-0 z-20 bg-transparent border-b border-[#D5D7DA] pointer-events-none group-hover:pointer-events-auto group-hover:bg-transparent"
+          @click.stop
         >
           <div class="opacity-0 invisible group-hover:opacity-100 group-hover:visible">
             <slot name="action" :row="row"></slot>
@@ -146,7 +152,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['updateSelectedIds'])
+const emit = defineEmits(['updateSelectedIds', 'rowClick'])
 
 const localSelectedIds = ref([])
 const selectedAll = ref(false)

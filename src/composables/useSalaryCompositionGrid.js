@@ -17,7 +17,7 @@ export const useSalaryCompositionGrid = () => {
    */
   const getSalaryCompositionDetail = async (id) => {
     try {
-      const response = await http.get(`${listApi.SalaryCompositions}/${id}`)
+      const response = await http.get(`${listApi.SalaryCompositions}/get-by-id/${id}`)
       if (response.isSuccess) {
         salaryCompositionDetail.value = response.data
       }
@@ -54,6 +54,12 @@ export const useSalaryCompositionGrid = () => {
     isOpenSalaryCompositionGrid.value = true
   }
 
+  const handleOpenToDetail = async (id) => {
+    await getSalaryCompositionDetail(id)
+    type.value = 'detail'
+    isOpenSalaryCompositionGrid.value = true
+  }
+
   /**
    * Xử lý sau khi lưu và muốn thêm tiếp (lấy mã mới và giữ trạng thái create)
    */
@@ -70,5 +76,6 @@ export const useSalaryCompositionGrid = () => {
     handleOpenToUpdate,
     handleOpenToDouble,
     handleSaveAndAdd,
+    handleOpenToDetail,
   }
 }
