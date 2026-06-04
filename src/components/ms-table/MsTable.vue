@@ -26,7 +26,10 @@
       <tr
         v-for="row in rows"
         :key="row.salaryCompositionId"
-        class="relative group bg-white"
+        :class="[
+          'relative group bg-white',
+          localSelectedIds.includes(row.salaryCompositionId) ? 'ticked' : '',
+        ]"
         @click="emit('rowClick', row)"
       >
         <td class="!w-[50px] h-9 sticky left-0 z-20 bg-white border-b border-[#D5D7DA]" @click.stop>
@@ -206,5 +209,14 @@ tr:hover,
 tr:hover td {
   cursor: pointer;
   background-color: #cdeadf;
+}
+tr.ticked,
+tr.ticked td {
+  cursor: pointer;
+  background-color: #cdeadf;
+}
+tr.ticked td:last-child {
+  cursor: pointer;
+  background-color: transparent;
 }
 </style>
