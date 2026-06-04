@@ -7,7 +7,8 @@
       @click="toggleDropdown"
     >
       <span class="select-trigger-text"
-        >{{ prefixLabel }} <span class="font-semibold">{{ selectedLabel }}</span></span
+        ><span class="text-[#717680]">{{ prefixLabel }}{{ ' ' }}</span>
+        <span class="font-semibold">{{ selectedLabel }}</span></span
       >
       <div class="select-arrow">
         <div class="icon-chevron-down"></div>

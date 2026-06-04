@@ -11,7 +11,12 @@ const router = createRouter({
         {
           path: 'salarycomposition',
           name: 'salarycomposition',
-          component: () => import('@/views/salary-composition/Index.vue'),
+          component: () => import('@/views/salary-composition/SalaryComposition.vue'),
+        },
+        {
+          path: 'salarycomposition/system-category',
+          name: 'system-category',
+          component: () => import('@/views/system-category/SystemCategory.vue'),
         },
       ],
     },

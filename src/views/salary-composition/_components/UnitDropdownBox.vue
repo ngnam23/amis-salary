@@ -133,8 +133,10 @@ const getData = async () => {
 }
 
 watch(selectedValue, (val) => {
-  if (Array.isArray(val) && val.length > 0 && isNodesReady.value) {
-    selectedValue.value = restoreSelectedValue(val, nodes.value)
+  if (isNodesReady.value) {
+    if (Array.isArray(val) && val.length > 0) {
+      selectedValue.value = restoreSelectedValue(val, nodes.value)
+    }
   }
 })
 

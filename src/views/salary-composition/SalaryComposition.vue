@@ -181,7 +181,12 @@ onMounted(() => {
       <div class="flex justify-between pb-[14px]">
         <h2 class="text-[20px] font-bold">Thành phần lương</h2>
         <div class="flex gap-x-3">
-          <MsButtonBase label="Danh mục của hệ thống"> <div class="icon-rule"></div> </MsButtonBase>
+          <MsButtonBase
+            label="Danh mục của hệ thống"
+            @click="$router.push('/salarycomposition/system-category')"
+          >
+            <div class="icon-rule"></div>
+          </MsButtonBase>
           <div class="flex items-center">
             <div
               class="flex items-center justify-center gap-x-2 w-[88px] h-8 px-3 bg-[#0E9A62] border border-[#0E9A62] text-white !mr-0 rounded-l-[8px] hover:bg-[#0A724B] cursor-pointer"

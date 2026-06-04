@@ -519,7 +519,6 @@ watch(
   async ([isOpen, type, detail]) => {
     if (isOpen) {
       isInitializing = true
-      console.log(type, detail)
       if (type === 'create') {
         setValues({
           ...getSalaryCompositionInitialValues(type, detail),

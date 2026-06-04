@@ -4,4 +4,5 @@ export const listApi = {
   SalaryCompositionsDelete: '/SalaryCompositions',
   SalaryCompositionsStatus: '/SalaryCompositions/status',
   Organizations: '/Organizations',
+  SalaryCompositionSystems: '/SalaryCompositionSystems',
 }
