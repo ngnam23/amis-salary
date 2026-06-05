@@ -42,18 +42,20 @@ const props = defineProps({
   font-size: 13px !important;
 }
 .p-select-list {
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  gap: 0 !important;
 }
 .p-select-option.p-select-option-selected {
-  background-color: #cdeadf;
-  color: #0e9a62;
+  background-color: #cdeadf !important;
+  color: #0e9a62 !important;
+  font-weight: 500 !important;
 }
 .p-select-option {
-  border-radius: 0;
+  border-radius: 0 !important;
 }
 .p-select-option:not(.p-select-option-selected):not(.p-disabled):hover {
-  background-color: #e9eaeb;
+  background-color: #e9eaeb !important;
 }
 .p-icon {
   width: 12px;

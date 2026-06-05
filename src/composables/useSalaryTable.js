@@ -30,6 +30,7 @@ export const useSalaryTable = () => {
   const keyword = ref('')
   const isActive = ref(-1)
   const isLoading = ref(false)
+  const selectedOrganizationIds = ref(null)
 
   /**
    * Hàm debounce gọi API lấy dữ liệu để tránh gọi liên tục khi người dùng gõ tìm kiếm
@@ -45,13 +46,14 @@ export const useSalaryTable = () => {
   const getData = async () => {
     isLoading.value = true
     try {
-      const response = await http.get(listApi.SalaryCompositionsPaging, {
-        params: {
-          pageSize: pageSize.value,
-          pageIndex: pageIndex.value,
-          keyword: keyword.value,
-          isActive: +isActive.value === -1 ? null : Boolean(isActive.value),
-        },
+      const response = await http.post(listApi.SalaryCompositionsPaging, {
+        pageSize: pageSize.value,
+        pageIndex: pageIndex.value,
+        keyword: keyword.value,
+        isActive: +isActive.value === -1 ? null : Boolean(isActive.value),
+        organizationIds: Object.entries(selectedOrganizationIds.value || {})
+          .filter(([_, state]) => state.checked)
+          .map(([key]) => key),
       })
       if (response.isSuccess) {
         rows.value = response.data.data
@@ -73,6 +75,7 @@ export const useSalaryTable = () => {
     pageIndex,
     pageSize,
     isActive,
+    selectedOrganizationIds,
     fields,
     isLoading,
     getData,

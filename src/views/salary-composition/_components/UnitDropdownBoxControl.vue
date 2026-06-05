@@ -7,7 +7,7 @@
       selectionMode="checkbox"
       placeholder="Tất cả đơn vị"
       display="chip"
-      class="min-w-[350px] !h-8 !rounded-[8px] !text-[13px] font-normal hover:!border-[#0E9A62] focus:!border-[#0E9A62] placeholder:!text-[#9e9e9e]"
+      class="w-full !h-8 !rounded-[8px] !text-[13px] font-normal hover:!border-[#0E9A62] focus:!border-[#0E9A62] placeholder:!text-[#9e9e9e]"
     >
       <template #value="slotProps">
         <div v-if="displayNodes.length > 0" class="flex w-full overflow-hidden gap-x-1">
@@ -43,18 +43,31 @@
         </div>
       </template> -->
     </TreeSelect>
+    <p v-if="errorMessage" class="text-xs text-[#f7453b] font-medium">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 
 <script setup>
 import { listApi } from '@/constants/list-api'
-import { convertFlatToTree } from '@/utils/common'
+import { convertFlatToTree, restoreSelectedValue } from '@/utils/common'
 import http from '@/utils/http'
 import { TreeSelect } from 'primevue'
-import { ref, computed, onMounted } from 'vue'
+import { useField } from 'vee-validate'
+import { ref, computed, onMounted, watch } from 'vue'
 
-const selectedValue = defineModel()
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+})
+
+const { value: selectedValue, errorMessage, handleBlur } = useField(props.name)
+
 const nodes = ref([])
+const isNodesReady = ref(false)
 
 const displayNodes = computed(() => {
   if (!selectedValue.value || !nodes.value) return []
@@ -111,8 +124,21 @@ const getData = async () => {
   const response = await http.get(listApi.Organizations)
   if (response.isSuccess) {
     nodes.value = convertFlatToTree(response.data)
+    isNodesReady.value = true
+
+    if (Array.isArray(selectedValue.value) && selectedValue.value.length > 0) {
+      selectedValue.value = restoreSelectedValue(selectedValue.value, nodes.value)
+    }
   }
 }
+
+watch(selectedValue, (val) => {
+  if (isNodesReady.value) {
+    if (Array.isArray(val) && val.length > 0) {
+      selectedValue.value = restoreSelectedValue(val, nodes.value)
+    }
+  }
+})
 
 onMounted(() => {
   getData()

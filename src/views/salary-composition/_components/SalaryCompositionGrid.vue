@@ -107,7 +107,7 @@
             <p class="font-normal">Đơn vị áp dụng<span class="text-[red]">*</span></p>
           </div>
           <div class="col-span-10">
-            <UnitDropdownBox v-if="type !== 'detail'" name="selectedOrganizationIds" />
+            <UnitDropdownBoxControl v-if="type !== 'detail'" name="selectedOrganizationIds" />
             <div
               v-else
               class="group flex items-center h-9 justify-between border-b border-[#e3e5ee]"
@@ -383,7 +383,7 @@ import http from '@/utils/http.js'
 import { listApi } from '@/constants/list-api.js'
 import { useToast } from 'primevue/usetoast'
 import { convertToCode } from '@/utils/common.js'
-import UnitDropdownBox from './UnitDropdownBox.vue'
+import UnitDropdownBoxControl from './UnitDropdownBoxControl.vue'
 import { Button, Menu } from 'primevue'
 
 const props = defineProps({

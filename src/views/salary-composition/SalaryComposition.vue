@@ -50,6 +50,7 @@ const {
   pageSize,
   keyword,
   isActive,
+  selectedOrganizationIds,
   fields,
   isLoading,
   getData,
@@ -149,7 +150,7 @@ const handleMoreDelete = (detail) => {
 }
 
 watch(
-  [pageIndex, isActive],
+  [pageIndex, isActive, selectedOrganizationIds],
   () => {
     getData()
   },
@@ -215,7 +216,7 @@ onMounted(() => {
                 <InputText
                   v-model="keyword"
                   placeholder="Tìm kiếm"
-                  class="!h-8 !rounded-[8px] !text-[13px] font-normal hover:!border-[#0E9A62] focus:!border-[#0E9A62] placeholder:!text-[#9e9e9e]"
+                  class="min-w-[300px] !h-8 !rounded-[8px] !text-[13px] font-normal hover:!border-[#0E9A62] focus:!border-[#0E9A62] placeholder:!text-[#9e9e9e]"
                 />
               </IconField>
               <div v-if="selectedIdsArray.length <= 0" class="flex items-center gap-x-2">
@@ -224,7 +225,7 @@ onMounted(() => {
                   :options="activeTypeSelectOptions"
                   prefix-label="Trạng thái:"
                 />
-                <UnitDropdownBox name="abc" />
+                <UnitDropdownBox v-model="selectedOrganizationIds" />
               </div>
               <div v-else class="flex items-center gap-x-4">
                 <div class="flex items-center gap-x-4">
@@ -247,6 +248,17 @@ onMounted(() => {
                   </MsButtonBase>
                 </div>
               </div>
+            </div>
+            <div class="flex items-center gap-x-2">
+              <MsButtonBase v-tooltip.bottom="{ value: 'Bộ lọc', showDelay: 300 }" class="w-8 !p-0">
+                <div class="icon-filter"></div>
+              </MsButtonBase>
+              <MsButtonBase
+                v-tooltip.bottom="{ value: 'Thiết lập', showDelay: 300 }"
+                class="w-8 !p-0"
+              >
+                <div class="icon-setting"></div>
+              </MsButtonBase>
             </div>
           </div>
         </div>

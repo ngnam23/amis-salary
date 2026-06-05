@@ -105,7 +105,7 @@ onBeforeUnmount(() => {
   display: inline-block;
   font-size: 13px;
   font-weight: normal;
-  min-width: 150px;
+  min-width: fit-content;
 }
 
 .select-trigger {
