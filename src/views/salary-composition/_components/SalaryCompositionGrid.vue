@@ -410,7 +410,7 @@ const emit = defineEmits(['close', 'refresh', 'confirm', 'more-double', 'more-de
 
 const { schema, getSalaryCompositionInitialValues } = useSalaryCompositionValidation()
 
-const { setValues, handleSubmit, setFieldValue, values, resetForm } = useForm({
+const { setValues, handleSubmit, setFieldValue, values, resetForm, meta } = useForm({
   validationSchema: schema,
   // keepValuesOnUnmount: true,
   initialValues: getSalaryCompositionInitialValues(props.type, props.salaryCompositionDetail),
@@ -523,17 +523,19 @@ watch(
     if (isOpen) {
       isInitializing = true
       if (type === 'create') {
-        setValues({
-          ...getSalaryCompositionInitialValues(type, detail),
+        resetForm({
+          values: getSalaryCompositionInitialValues(type, detail),
         })
       } else if (type === 'update' || type === 'double' || type === 'detail') {
         if (detail) {
-          setValues({
-            ...detail,
-            salaryCompositionCode:
-              type === 'update' || type === 'detail' ? detail?.salaryCompositionCode : '',
-            salaryCompositionName:
-              type === 'update' || type === 'detail' ? detail?.salaryCompositionName : '',
+          resetForm({
+            values: {
+              ...detail,
+              salaryCompositionCode:
+                type === 'update' || type === 'detail' ? detail?.salaryCompositionCode : '',
+              salaryCompositionName:
+                type === 'update' || type === 'detail' ? detail?.salaryCompositionName : '',
+            },
           })
         }
       }
@@ -633,14 +635,18 @@ const handleSaveContinue = handleSubmit(async (values) => {
 })
 
 const handleBack = () => {
-  showConfirm(
-    'Nếu bạn thoát, các dữ liệu đang nhập liệu sẽ không được lưu lại.',
-    () => {
-      emit('close')
-    },
-    'Thoát và không lưu?',
-    'Thoát, không lưu',
-    'Ở lại',
-  )
+  if (meta.value.dirty) {
+    showConfirm(
+      'Nếu bạn thoát, các dữ liệu đang nhập liệu sẽ không được lưu lại.',
+      () => {
+        emit('close')
+      },
+      'Thoát và không lưu?',
+      'Thoát, không lưu',
+      'Ở lại',
+    )
+  } else {
+    emit('close')
+  }
 }
 </script>
