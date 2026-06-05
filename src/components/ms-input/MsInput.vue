@@ -1,6 +1,7 @@
 <script setup>
 import { InputText } from 'primevue'
 import { useField } from 'vee-validate'
+import { ref, onMounted, nextTick } from 'vue'
 
 const props = defineProps({
   name: {
@@ -19,14 +20,30 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  autofocus: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const { value, errorMessage, handleBlur } = useField(props.name)
+
+const inputRef = ref(null)
+
+onMounted(() => {
+  if (props.autofocus) {
+    nextTick(() => {
+      const el = inputRef.value?.$el || inputRef.value
+      el?.focus?.()
+    })
+  }
+})
 </script>
 
 <template>
   <div class="flex flex-col gap-y-1 w-full">
     <InputText
+      ref="inputRef"
       :type="type"
       v-model="value"
       :disabled="disabled"

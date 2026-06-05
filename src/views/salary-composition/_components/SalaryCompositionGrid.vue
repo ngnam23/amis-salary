@@ -58,7 +58,7 @@
             <p class="font-normal">Tên thành phần <span class="text-[red]">*</span></p>
           </div>
           <div class="col-span-10">
-            <MsInput v-if="type !== 'detail'" name="salaryCompositionName" />
+            <MsInput v-if="type !== 'detail'" name="salaryCompositionName" autofocus />
             <div
               v-else
               class="group flex items-center h-9 justify-between border-b border-[#e3e5ee]"
