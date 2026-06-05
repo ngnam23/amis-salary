@@ -8,6 +8,10 @@
       placeholder="Tất cả đơn vị"
       display="chip"
       class="w-full !h-8 !rounded-[8px] !text-[13px] font-normal hover:!border-[#0E9A62] focus:!border-[#0E9A62] placeholder:!text-[#9e9e9e]"
+      :class="[
+        errorMessage && ' hover:!border-[#f7453b] focus:!border-[#f7453b]',
+        errorMessage ? '!border-[#f7453b]' : '!border-[#D5D7DA]',
+      ]"
     >
       <template #value="slotProps">
         <div v-if="displayNodes.length > 0" class="flex w-full overflow-hidden gap-x-1">

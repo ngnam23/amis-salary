@@ -15,6 +15,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const { value, errorMessage, handleBlur } = useField(props.name)
@@ -25,12 +29,14 @@ const { value, errorMessage, handleBlur } = useField(props.name)
     <InputText
       :type="type"
       v-model="value"
+      :disabled="disabled"
       class="!h-8 !rounded-[8px] !text-[13px] font-normal hover:!border-[#0E9A62] focus:!border-[#0E9A62] placeholder:!text-[#9e9e9e]"
       @blur="handleBlur"
       :placeholder="placeholder"
       :class="[
         errorMessage && ' hover:!border-[#f7453b] focus:!border-[#f7453b]',
         errorMessage ? '!border-[#f7453b]' : '!border-[#D5D7DA]',
+        disabled && 'hover:!border-[#D5D7DA] focus:!border-none !bg-[#f5f5f5] cursor-not-allowed',
       ]"
     />
 

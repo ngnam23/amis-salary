@@ -3,8 +3,9 @@
     <div class="flex items-center justify-between h-9 mb-[14px]">
       <div class="flex items-center">
         <div
+          v-tooltip.bottom="{ value: 'Quay lại', showDelay: 300 }"
           class="w-9 h-9 mr-2 rounded-full flex items-center justify-center hover:bg-[#dadce3] cursor-pointer"
-          @click="$emit('close')"
+          @click="handleBack"
         >
           <div class="icon-arrow-left"></div>
         </div>
@@ -82,6 +83,7 @@
           <div class="col-span-10">
             <MsInput
               v-if="type !== 'detail'"
+              :disabled="type === 'update'"
               name="salaryCompositionCode"
               placeholder="Nhập mã viết liền"
             />
@@ -384,7 +386,7 @@ import { listApi } from '@/constants/list-api.js'
 import { useToast } from 'primevue/usetoast'
 import { convertToCode } from '@/utils/common.js'
 import UnitDropdownBoxControl from './UnitDropdownBoxControl.vue'
-import { Button, Menu } from 'primevue'
+import { Button, Menu, useConfirm } from 'primevue'
 
 const props = defineProps({
   type: {
@@ -402,6 +404,7 @@ const props = defineProps({
 })
 
 const toast = useToast()
+const confirm = useConfirm()
 
 const emit = defineEmits(['close', 'refresh', 'confirm', 'more-double', 'more-delete'])
 
@@ -545,6 +548,27 @@ const showToast = (severity, summary, detail) => {
   toast.add({ group: 'toast-alert', severity, summary, detail, life: 3000 })
 }
 
+const showConfirm = (
+  message,
+  onAccept,
+  header = 'Xác nhận',
+  acceptLabel = 'Đồng ý',
+  rejectLabel = 'Hủy bỏ',
+  acceptClass = '',
+  rejectClass = '',
+) => {
+  confirm.require({
+    group: 'confirm-dialog',
+    header,
+    message,
+    acceptLabel,
+    rejectLabel,
+    acceptClass,
+    rejectClass,
+    accept: onAccept,
+  })
+}
+
 // Hàm dùng chung để lưu dữ liệu lên Server
 const executeSaveAPI = async (values) => {
   let submitValues = {
@@ -607,4 +631,16 @@ const handleSaveContinue = handleSubmit(async (values) => {
     showToast('error', 'Lỗi', error?.data?.devMessage || 'Có lỗi xảy ra, hãy thử lại')
   }
 })
+
+const handleBack = () => {
+  showConfirm(
+    'Nếu bạn thoát, các dữ liệu đang nhập liệu sẽ không được lưu lại.',
+    () => {
+      emit('close')
+    },
+    'Thoát và không lưu?',
+    'Thoát, không lưu',
+    'Ở lại',
+  )
+}
 </script>

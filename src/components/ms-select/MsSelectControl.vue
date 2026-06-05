@@ -46,6 +46,7 @@ const { value, errorMessage, handleBlur } = useField(() => props.name)
       :class="[
         errorMessage && ' hover:!border-[#f7453b] focus:!border-[#f7453b]',
         errorMessage ? '!border-[#f7453b]' : '!border-[#D5D7DA]',
+        disabled && 'hover:!border-[#D5D7DA] focus:!border-none !bg-[#f5f5f5] cursor-not-allowed',
       ]"
     />
     <p v-if="errorMessage" class="text-xs text-[#f7453b] font-medium">

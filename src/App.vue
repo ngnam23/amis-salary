@@ -15,7 +15,9 @@ import ConfirmDialog from 'primevue/confirmdialog'
       >
         <div class="px-3 flex items-center gap-x-2">
           <div
-            :class="[message.severity === 'success' ? 'pi pi-check' : 'pi pi-exclamation-circle']"
+            :class="[
+              message.severity === 'success' ? 'icon-success-plus' : 'pi pi-exclamation-circle',
+            ]"
             style="font-size: 16px"
           ></div>
           <p>{{ message.detail }}</p>

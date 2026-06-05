@@ -66,18 +66,16 @@ watch(
       await fetchSelectedOption(newVal)
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 const getData = async () => {
   if (isLoading.value) return
   isLoading.value = true
   try {
-    const response = await http.get(listApi.SalaryCompositionsPaging, {
-      params: {
-        pageSize: pageSize.value,
-        pageIndex: pageIndex.value,
-      },
+    const response = await http.post(listApi.SalaryCompositionsPaging, {
+      pageSize: pageSize.value,
+      pageIndex: pageIndex.value,
     })
     if (response.isSuccess) {
       const fetchedData =
