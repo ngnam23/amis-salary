@@ -28,6 +28,7 @@
         <div class="flex items-center gap-3">
           <div
             v-for="item in navItems"
+            v-tooltip.bottom="{ value: item.label, showDelay: 100 }"
             :key="item.label"
             class="flex items-center justify-center w-9 h-9 hover:bg-001a rounded-full cursor-pointer"
           >

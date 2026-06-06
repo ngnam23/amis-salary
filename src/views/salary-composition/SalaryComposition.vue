@@ -205,7 +205,7 @@ onUnmounted(() => {
           </MsButtonBase>
           <div class="flex items-center">
             <div
-              v-tooltip.bottom="{ value: 'Thêm (Ctrl + 1)', showDelay: 300 }"
+              v-tooltip.bottom="{ value: 'Thêm (Ctrl + 1)', showDelay: 100 }"
               class="flex items-center justify-center gap-x-2 w-[88px] h-8 px-3 bg-[#0E9A62] border border-[#0E9A62] text-white !mr-0 rounded-l-[8px] hover:bg-[#0A724B] cursor-pointer"
               @click="handleOpenCreate"
             >
@@ -266,11 +266,11 @@ onUnmounted(() => {
               </div>
             </div>
             <div class="flex items-center gap-x-2">
-              <MsButtonBase v-tooltip.bottom="{ value: 'Bộ lọc', showDelay: 300 }" class="w-8 !p-0">
+              <MsButtonBase v-tooltip.bottom="{ value: 'Bộ lọc', showDelay: 100 }" class="w-8 !p-0">
                 <div class="icon-filter"></div>
               </MsButtonBase>
               <MsButtonBase
-                v-tooltip.bottom="{ value: 'Thiết lập', showDelay: 300 }"
+                v-tooltip.bottom="{ value: 'Thiết lập', showDelay: 100 }"
                 class="w-8 !p-0"
               >
                 <div class="icon-setting"></div>
@@ -293,6 +293,7 @@ onUnmounted(() => {
                 <template #action="{ row }">
                   <div class="flex items-center gap-x-2 justify-center px-3">
                     <div
+                      :title="row.isActive ? 'Ngừng theo dõi' : 'Đang theo dõi'"
                       class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
                       @click="() => handleRowSelect('toggleStatus', row)"
                     >
@@ -303,18 +304,21 @@ onUnmounted(() => {
                       ></div>
                     </div>
                     <div
+                      title="Nhân bản"
                       class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
                       @click="() => handleRowSelect('double', row)"
                     >
                       <div class="icon-copy"></div>
                     </div>
                     <div
+                      title="Sửa"
                       class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
                       @click="() => handleRowSelect('update', row)"
                     >
                       <div class="icon-pencil"></div>
                     </div>
                     <div
+                      title="Xóa"
                       class="w-7 h-7 rounded-[8px] bg-white border border-[#D5D7DA] flex items-center justify-center hover:bg-[#E9EAEB]"
                       @click="() => handleRowSelect('delete', row)"
                     >

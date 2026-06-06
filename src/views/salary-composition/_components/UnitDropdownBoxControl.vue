@@ -5,7 +5,7 @@
       size="small"
       :options="nodes"
       selectionMode="checkbox"
-      placeholder="Tất cả đơn vị"
+      placeholder="Chọn đơn vị"
       display="chip"
       class="w-full !h-8 !rounded-[8px] !text-[13px] font-normal hover:!border-[#0E9A62] focus:!border-[#0E9A62] placeholder:!text-[#9e9e9e]"
       :class="[

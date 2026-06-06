@@ -80,6 +80,10 @@ const handleChange = () => {
   user-select: none;
 }
 
+.radio-label:hover .radio-custom {
+  border-color: #0a724b;
+}
+
 .radio-custom {
   position: relative;
   width: 16px;
@@ -106,6 +110,9 @@ const handleChange = () => {
   height: 10px;
   background-color: #0e9a62;
   border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Focus state */
