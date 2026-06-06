@@ -93,3 +93,13 @@ export const restoreSelectedValue = (selectedKeys, treeNodes) => {
   treeNodes.forEach(processNode)
   return result
 }
+
+export const checkValueSelectedOrganizationIds = (value) => {
+  if (Array.isArray(value)) {
+    return value.length > 0 ? value : null
+  }
+  if (value && typeof value === 'object') {
+    return value
+  }
+  return null
+}

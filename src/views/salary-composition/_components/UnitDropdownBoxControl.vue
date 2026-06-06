@@ -121,6 +121,11 @@ const removeNode = (targetKey) => {
   }
 
   findAndRemove(nodes.value, [])
+  if (!newSelected || Object.keys(newSelected).length === 0) {
+    selectedValue.value = null
+    return
+  }
+
   selectedValue.value = newSelected
 }
 
