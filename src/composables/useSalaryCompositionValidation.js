@@ -1,3 +1,4 @@
+import { DefaultOrganizationValue } from '@/constants/common'
 import * as yup from 'yup'
 
 export const useSalaryCompositionValidation = () => {
@@ -46,6 +47,7 @@ export const useSalaryCompositionValidation = () => {
       description: '',
       optionShowPaycheck: 1,
       generatingSource: 1,
+      selectedOrganizationIds: DefaultOrganizationValue,
     }
   }
 

@@ -40,7 +40,7 @@ export const convertFlatToTree = (list) => {
 
   // Bước 2: Duyệt danh sách lần nữa để móc nối quan hệ Cha - Con
   list.forEach((item) => {
-    const parentId = item.organizationParentId
+    const parentId = item.organizationParentKey
     const currentKey = item.organizationKey
 
     if (parentId !== null && map[parentId]) {

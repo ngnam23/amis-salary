@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import MsTable from '@/components/ms-table/MsTable.vue'
 import MsButtonBase from '@/components/ms-button/MsButtonBase.vue'
 import { useSalaryTable } from '@/composables/useSalaryTable'
@@ -169,10 +169,25 @@ watch(keyword, () => {
   debounceGetData()
 })
 
+/**
+ * Xử lý sự kiện nhấn phím tắt hệ thống
+ * @param {KeyboardEvent} event - Đối tượng sự kiện phím
+ */
+const handleKeyDown = (event) => {
+  if (event.ctrlKey && event.key === '1') {
+    event.preventDefault()
+    handleOpenCreate()
+  }
+}
+
 onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
   nextTick(() => {
     getData()
   })
+})
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
 })
 </script>
 
@@ -190,6 +205,7 @@ onMounted(() => {
           </MsButtonBase>
           <div class="flex items-center">
             <div
+              v-tooltip.bottom="{ value: 'Thêm (Ctrl + 1)', showDelay: 300 }"
               class="flex items-center justify-center gap-x-2 w-[88px] h-8 px-3 bg-[#0E9A62] border border-[#0E9A62] text-white !mr-0 rounded-l-[8px] hover:bg-[#0A724B] cursor-pointer"
               @click="handleOpenCreate"
             >

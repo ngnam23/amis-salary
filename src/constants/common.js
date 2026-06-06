@@ -145,3 +145,15 @@ export const AutoSumOrgLevel = [
     label: 'Cấp 4',
   },
 ]
+
+export const DefaultOrganizationValue = {
+  0: { checked: true, partialChecked: false },
+  '0-0': { checked: true, partialChecked: false },
+  '0-0-0': { checked: true, partialChecked: false },
+  '0-0-0-0': { checked: true, partialChecked: false },
+  '0-0-0-1': { checked: true, partialChecked: false },
+  '0-0-1': { checked: true, partialChecked: false },
+  '0-0-2': { checked: true, partialChecked: false },
+  '0-1': { checked: true, partialChecked: false },
+  '0-1-0': { checked: true, partialChecked: false },
+}

@@ -375,6 +375,7 @@ import {
   AutoSumOrgLevel,
   CompositionNature,
   CompositionType,
+  DefaultOrganizationValue,
   SumScope,
   ValueType,
 } from '@/constants/common'
@@ -413,7 +414,7 @@ const { schema, getSalaryCompositionInitialValues } = useSalaryCompositionValida
 const { setValues, handleSubmit, setFieldValue, values, resetForm, meta } = useForm({
   validationSchema: schema,
   // keepValuesOnUnmount: true,
-  initialValues: getSalaryCompositionInitialValues(props.type, props.salaryCompositionDetail),
+  // initialValues: getSalaryCompositionInitialValues(props.type, props.salaryCompositionDetail),
 })
 let isInitializing = false
 
@@ -580,6 +581,7 @@ const executeSaveAPI = async (values) => {
       .map(([key]) => key),
   }
 
+  delete submitValues?.organizationIds
   if (props.type === 'double' || props.type === 'create') {
     delete submitValues?.salaryCompositionId
   }
@@ -596,20 +598,18 @@ const executeSaveAPI = async (values) => {
 
 // Hàm xử lý lưu
 const handleSave = handleSubmit(async (values) => {
-  try {
-    const response = await executeSaveAPI(values)
-    if (response.isSuccess) {
-      showToast(
-        'success',
-        'Thành công',
-        `${props.type === 'update' ? 'Cập nhật' : 'Thêm'} thành công`,
-      )
-      resetForm()
-      emit('close')
-      emit('refresh')
-    }
-  } catch (error) {
-    showToast('error', 'Lỗi', error?.data?.devMessage || 'Có lỗi xảy ra, hãy thử lại')
+  const response = await executeSaveAPI(values)
+  if (response.isSuccess) {
+    showToast(
+      'success',
+      'Thành công',
+      `${props.type === 'update' ? 'Cập nhật' : 'Thêm'} thành công`,
+    )
+    resetForm()
+    emit('close')
+    emit('refresh')
+  } else {
+    showToast('error', 'Lỗi', response.devMessage || 'Có lỗi xảy ra, hãy thử lại')
   }
 })
 

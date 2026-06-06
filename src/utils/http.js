@@ -23,14 +23,13 @@ http.interceptors.response.use(
     return response.data
   },
   (error) => {
-    const status = error.response?.status
     const data = error.response?.data
 
-    return Promise.reject({
-      status,
-      message: data?.message || error.message,
-      data,
-    })
+    if (error.response?.status === 400 && data) {
+      return Promise.resolve(data)
+    }
+
+    return Promise.reject(data || error)
   },
 )
 
