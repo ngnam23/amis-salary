@@ -176,31 +176,31 @@ export const excelFormulaGrammar = {
 
 export const formulaList = [
   {
-    name: 'SUM',
+    name: 'SUM(',
     syntax: '(X1, X2, ...)',
   },
   {
-    name: 'IF',
+    name: 'IF(',
     syntax: '(Logical_test, [value_if_true], [value_if_false])',
   },
   {
-    name: 'IFS',
+    name: 'IFS(',
     syntax: '(logical_test1, value_if_true1, [logical_test2, value_if_true2], ...)',
   },
   {
-    name: 'AND',
+    name: 'AND(',
     syntax: '(X1, X2)',
   },
   {
-    name: 'OR',
+    name: 'OR(',
     syntax: '(X1, X2)',
   },
   {
-    name: 'ROUNDDOWN',
+    name: 'ROUNDDOWN(',
     syntax: '(number, num_digits)',
   },
   {
-    name: 'DATE',
+    name: 'DATE(',
     syntax: '(year, month, day)',
   },
 ]

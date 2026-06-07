@@ -2,7 +2,9 @@
 import { useField } from 'vee-validate'
 import prism from 'prismjs'
 import 'prismjs/components/prism-latex'
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted, nextTick, KeepAlive } from 'vue'
+import http from '@/utils/http'
+import { listApi } from '@/constants/list-api'
 import 'prismjs/themes/prism-tomorrow.css'
 import { excelFormulaGrammar, formulaList } from '@/constants/common'
 
@@ -22,26 +24,82 @@ const highlightedCode = ref('')
 const isFocused = ref(false)
 const tabActive = ref(1)
 
-function onFocus() {
-  isFocused.value = true
+const pageIndex = ref(1)
+const pageSize = ref(20)
+const options = ref([])
+const isLoading = ref(false)
+const hasMore = ref(true)
+
+const getData = async () => {
+  if (isLoading.value) return
+  isLoading.value = true
+  try {
+    const response = await http.post(listApi.SalaryCompositionsPaging, {
+      pageSize: pageSize.value,
+      pageIndex: pageIndex.value,
+    })
+    if (response.isSuccess) {
+      if (pageIndex.value === 1) {
+        options.value = response.data.data
+      } else {
+        options.value.push(...response.data.data)
+      }
+
+      if (response.data.data.length < pageSize.value) {
+        hasMore.value = false
+      } else {
+        hasMore.value = true
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching list:', error)
+  } finally {
+    isLoading.value = false
+  }
 }
 
-function onBlur(e) {
-  // preserve vee-validate blur handling
-  handleBlur(e)
-  // do not close popup here; global handlers manage closing when clicking/focusing outside
+const handleScroll = (event) => {
+  const { scrollTop, clientHeight, scrollHeight } = event.target
+  if (scrollTop + clientHeight >= scrollHeight - 5) {
+    loadMore()
+  }
+}
+
+const loadMore = async () => {
+  if (isLoading.value || !hasMore.value) return
+  pageIndex.value++
+  await getData()
+}
+
+async function handleScrollMore() {
+  await nextTick()
+  const popup = containerRef.value?.querySelector('.prism-editor__popup')
+  if (!popup) return
+  const scrollContainer = popup.querySelector('.ms-popup-scroll')
+  if (scrollContainer) {
+    scrollContainer.addEventListener('scroll', handleScroll)
+  }
+}
+
+function removeScrollMoreListen() {
+  const popup = containerRef.value?.querySelector('.prism-editor__popup')
+  if (!popup) return
+  const scrollContainer = popup.querySelector('.ms-popup-scroll')
+  if (scrollContainer) {
+    scrollContainer.removeEventListener('scroll', handleScroll)
+  }
 }
 
 const containerRef = ref(null)
 
-function onGlobalMouseDown(e) {
+function handleMouseDown(e) {
   if (!containerRef.value) return
   if (!containerRef.value.contains(e.target)) {
     isFocused.value = false
   }
 }
 
-function onGlobalFocusIn() {
+function handleFocusIn() {
   if (!containerRef.value) return
   if (!containerRef.value.contains(document.activeElement)) {
     isFocused.value = false
@@ -49,13 +107,14 @@ function onGlobalFocusIn() {
 }
 
 onMounted(() => {
-  document.addEventListener('mousedown', onGlobalMouseDown)
-  document.addEventListener('focusin', onGlobalFocusIn)
+  document.addEventListener('mousedown', handleMouseDown)
+  document.addEventListener('focusin', handleFocusIn)
 })
 
 onUnmounted(() => {
-  document.removeEventListener('mousedown', onGlobalMouseDown)
-  document.removeEventListener('focusin', onGlobalFocusIn)
+  document.removeEventListener('mousedown', handleMouseDown)
+  document.removeEventListener('focusin', handleFocusIn)
+  removeScrollMoreListen()
 })
 
 watch(
@@ -69,6 +128,24 @@ watch(
   },
   { immediate: true },
 )
+
+const changeTab = async (tab) => {
+  tabActive.value = tab
+  if (tab === 2) {
+    pageIndex.value = 1
+    hasMore.value = true
+    getData()
+    await handleScrollMore()
+  } else {
+    removeScrollMoreListen()
+  }
+}
+
+const handleChooseFormule = (text) => {
+  if (!text.trim()) return
+  const newValue = (value.value || '') + text
+  setValue(newValue)
+}
 </script>
 
 <template>
@@ -84,12 +161,12 @@ watch(
       data-testid="textarea"
       :placeholder="placeholder"
       @input="($event) => setValue($event.target.value)"
-      @focus="onFocus"
-      @blur="onBlur"
+      @focus="isFocused = true"
+      @blur="handleBlur"
     />
     <pre class="prism-editor__editor" data-testid="preview" v-html="highlightedCode"></pre>
-    <div v-if="isFocused" class="prism-editor__popup" data-testid="popup">
-      <div class="p-4">
+    <KeepAlive v-if="isFocused" class="prism-editor__popup" data-testid="popup">
+      <div>
         <div class="flex items-center gap-x-6 mb-1 border-b border-[#e0e0e0]">
           <div
             :class="[
@@ -98,7 +175,7 @@ watch(
                 ? ' border-[#34b057] font-bold text-[#34b057]'
                 : ' border-white font-normal',
             ]"
-            @click="tabActive = 1"
+            @click="changeTab(1)"
           >
             Công thức
           </div>
@@ -109,28 +186,47 @@ watch(
                 ? ' border-[#34b057] font-bold text-[#34b057]'
                 : ' border-white font-normal',
             ]"
-            @click="tabActive = 2"
+            @click="changeTab(2)"
           >
             Tham số
           </div>
         </div>
-        <div class="h-[171px] overflow-y-auto">
+        <div v-if="tabActive === 1" class="h-[171px] overflow-y-auto">
           <div
             v-for="func in formulaList"
             :key="func.name"
             class="flex items-center w-full px-2 hover:bg-[#eafbf2] hover:text-[#0E9A62] cursor-pointer"
+            @click="() => handleChooseFormule(func.name)"
           >
             <div class="w-5 h-5 flex items-center justify-center mr-3">
               <div class="icon-formula"></div>
             </div>
             <div class="flex items-center h-[57px] w-[calc(100%-36px)] border-b border-[#e0e0e0]">
               <span class="font-bold">{{ func.name }}</span>
-              <span class="">{{ func.syntax }}</span>
+              <span class="font-normal">{{ func.syntax }}</span>
+            </div>
+          </div>
+        </div>
+        <div v-if="tabActive === 2" class="h-[171px] overflow-y-auto ms-popup-scroll">
+          <div class="flex flex-col">
+            <div
+              v-for="opt in options"
+              :key="opt.salaryCompositionId"
+              class="flex items-center w-full px-2 hover:bg-[#eafbf2] hover:text-[#0E9A62] cursor-pointer"
+              @click="() => handleChooseFormule(opt.salaryCompositionCode)"
+            >
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <div class="icon-database"></div>
+              </div>
+              <div class="flex items-center h-[57px] w-[calc(100%-36px)] border-b border-[#e0e0e0]">
+                <span class="font-bold">{{ opt.salaryCompositionName }}</span>
+                <span class="font-normal">({{ opt.salaryCompositionCode }})</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </KeepAlive>
   </div>
 </template>
 
@@ -215,7 +311,7 @@ watch(
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
-  padding: 16px;
+  padding: 32px;
   z-index: 20;
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.200000003);
   color: #101828;
