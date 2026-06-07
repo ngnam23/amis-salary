@@ -173,3 +173,34 @@ export const excelFormulaGrammar = {
   // Chạy sau các luật trên, bắt các chuỗi chữ và số còn lại nằm trong ngoặc
   'cell-selector': /\b[A-Za-z0-9_]+\b/,
 }
+
+export const formulaList = [
+  {
+    name: 'SUM',
+    syntax: '(X1, X2, ...)',
+  },
+  {
+    name: 'IF',
+    syntax: '(Logical_test, [value_if_true], [value_if_false])',
+  },
+  {
+    name: 'IFS',
+    syntax: '(logical_test1, value_if_true1, [logical_test2, value_if_true2], ...)',
+  },
+  {
+    name: 'AND',
+    syntax: '(X1, X2)',
+  },
+  {
+    name: 'OR',
+    syntax: '(X1, X2)',
+  },
+  {
+    name: 'ROUNDDOWN',
+    syntax: '(number, num_digits)',
+  },
+  {
+    name: 'DATE',
+    syntax: '(year, month, day)',
+  },
+]

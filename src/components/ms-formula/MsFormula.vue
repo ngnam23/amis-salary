@@ -2,9 +2,9 @@
 import { useField } from 'vee-validate'
 import prism from 'prismjs'
 import 'prismjs/components/prism-latex'
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import 'prismjs/themes/prism-tomorrow.css'
-import { excelFormulaGrammar } from '@/constants/common'
+import { excelFormulaGrammar, formulaList } from '@/constants/common'
 
 const props = defineProps({
   name: {
@@ -19,6 +19,44 @@ const props = defineProps({
 
 const { value, handleBlur, setValue } = useField(() => props.name)
 const highlightedCode = ref('')
+const isFocused = ref(false)
+const tabActive = ref(1)
+
+function onFocus() {
+  isFocused.value = true
+}
+
+function onBlur(e) {
+  // preserve vee-validate blur handling
+  handleBlur(e)
+  // do not close popup here; global handlers manage closing when clicking/focusing outside
+}
+
+const containerRef = ref(null)
+
+function onGlobalMouseDown(e) {
+  if (!containerRef.value) return
+  if (!containerRef.value.contains(e.target)) {
+    isFocused.value = false
+  }
+}
+
+function onGlobalFocusIn() {
+  if (!containerRef.value) return
+  if (!containerRef.value.contains(document.activeElement)) {
+    isFocused.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('mousedown', onGlobalMouseDown)
+  document.addEventListener('focusin', onGlobalFocusIn)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mousedown', onGlobalMouseDown)
+  document.removeEventListener('focusin', onGlobalFocusIn)
+})
 
 watch(
   value,
@@ -34,7 +72,7 @@ watch(
 </script>
 
 <template>
-  <div class="prism-editor__container">
+  <div ref="containerRef" class="prism-editor__container">
     <textarea
       :value="value"
       class="prism-editor__textarea !rounded-[8px]"
@@ -46,9 +84,53 @@ watch(
       data-testid="textarea"
       :placeholder="placeholder"
       @input="($event) => setValue($event.target.value)"
-      @blur="handleBlur"
+      @focus="onFocus"
+      @blur="onBlur"
     />
     <pre class="prism-editor__editor" data-testid="preview" v-html="highlightedCode"></pre>
+    <div v-if="isFocused" class="prism-editor__popup" data-testid="popup">
+      <div class="p-4">
+        <div class="flex items-center gap-x-6 mb-1 border-b border-[#e0e0e0]">
+          <div
+            :class="[
+              'pb-1 border-b-[3px] cursor-pointer',
+              tabActive === 1
+                ? ' border-[#34b057] font-bold text-[#34b057]'
+                : ' border-white font-normal',
+            ]"
+            @click="tabActive = 1"
+          >
+            Công thức
+          </div>
+          <div
+            :class="[
+              'pb-1 border-b-[3px] cursor-pointer',
+              tabActive === 2
+                ? ' border-[#34b057] font-bold text-[#34b057]'
+                : ' border-white font-normal',
+            ]"
+            @click="tabActive = 2"
+          >
+            Tham số
+          </div>
+        </div>
+        <div class="h-[171px] overflow-y-auto">
+          <div
+            v-for="func in formulaList"
+            :key="func.name"
+            class="flex items-center w-full px-2 hover:bg-[#eafbf2] hover:text-[#0E9A62] cursor-pointer"
+          >
+            <div class="w-5 h-5 flex items-center justify-center mr-3">
+              <div class="icon-formula"></div>
+            </div>
+            <div class="flex items-center h-[57px] w-[calc(100%-36px)] border-b border-[#e0e0e0]">
+              <span class="font-bold">{{ func.name }}</span>
+              <span class="">{{ func.syntax }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -78,7 +160,7 @@ watch(
   line-height: 18px;
   position: relative;
   text-align: left;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 8px;
 }
 .prism-editor__container:hover,
@@ -124,5 +206,20 @@ watch(
   overflow-wrap: break-word;
   text-rendering: optimizeSpeed;
   font-weight: 400;
+}
+.prism-editor__popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  z-index: 20;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.200000003);
+  color: #101828;
+  line-height: 18px;
+  font-size: 13px;
 }
 </style>
