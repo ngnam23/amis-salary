@@ -104,6 +104,9 @@
           <template v-else-if="field.key === 'organizationIds'">
             <span class="!truncate line-clamp-1">{{ row.organizationName }}</span>
           </template>
+          <template v-else-if="field.key === 'norms' || field.key === 'formula'">
+            <span v-html="highlightedValue(row?.[field.key])" class="!truncate line-clamp-1"></span>
+          </template>
           <template v-else>
             <span class="!truncate line-clamp-1">{{ row[field.key] }}</span>
           </template>
@@ -124,9 +127,11 @@
 <script setup>
 import { ref, watch } from 'vue'
 import Checkbox from 'primevue/checkbox'
+import prism from 'prismjs'
 import {
   CompositionNature,
   CompositionType,
+  excelFormulaGrammar,
   OptionShowPaycheck,
   Taxable,
   ValueType,
@@ -159,6 +164,13 @@ const emit = defineEmits(['updateSelectedIds', 'rowClick'])
 
 const localSelectedIds = ref([])
 const selectedAll = ref(false)
+
+const highlightedValue = (value) => {
+  if (value === null || value === undefined || value === '') {
+    return '-'
+  }
+  return prism.highlight(value, excelFormulaGrammar, 'excel')
+}
 
 watch(
   () => props.rows,

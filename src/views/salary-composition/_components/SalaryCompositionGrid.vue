@@ -207,7 +207,7 @@
             <p class="font-normal">Định mức</p>
           </div>
           <div class="col-span-10">
-            <MsTextarea name="norms" placeholder="Tự động gợi ý công thức và tham số khi gõ" />
+            <MsFormula name="norms" placeholder="Tự động gợi ý công thức và tham số khi gõ" />
           </div>
         </div>
         <div v-if="values.compositionNature < 3" class="grid grid-cols-12 mb-4">
@@ -288,7 +288,7 @@
                   name="valueCalculationType"
                   :value="2"
                 />
-                <MsTextarea
+                <MsFormula
                   v-if="values.valueCalculationType === 2"
                   name="formula"
                   placeholder="Tự động gợi ý công thức và tham số khi gõ"
@@ -375,7 +375,6 @@ import {
   AutoSumOrgLevel,
   CompositionNature,
   CompositionType,
-  DefaultOrganizationValue,
   SumScope,
   ValueType,
 } from '@/constants/common'
@@ -388,6 +387,7 @@ import { useToast } from 'primevue/usetoast'
 import { checkValueSelectedOrganizationIds, convertToCode } from '@/utils/common.js'
 import UnitDropdownBoxControl from './UnitDropdownBoxControl.vue'
 import { Button, Menu, useConfirm } from 'primevue'
+import MsFormula from '@/components/ms-formula/MsFormula.vue'
 
 const props = defineProps({
   type: {

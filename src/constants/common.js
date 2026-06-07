@@ -157,3 +157,19 @@ export const DefaultOrganizationValue = {
   '0-1': { checked: true, partialChecked: false },
   '0-1-0': { checked: true, partialChecked: false },
 }
+
+export const excelFormulaGrammar = {
+  // 1. operator: Dấu = và dấu phẩy ,
+  operator: /[=,]/,
+
+  // 2. function-name builtin: Các hàm như SUM, IF, DATE...
+  // (Tìm các chữ viết hoa đứng ngay trước dấu ngoặc đơn mở)
+  'function-name builtin': /\b(SUM|IF|DATE|AVERAGE|VLOOKUP|COUNT)\b(?=\s*\()/,
+
+  // 3. punctuation: Dấu ngoặc đơn ()
+  punctuation: /[()]/,
+
+  // 4. cell selector: Các biến/mã ô (Ví dụ: KVLV2, 123SSSS, A1, B2...)
+  // Chạy sau các luật trên, bắt các chuỗi chữ và số còn lại nằm trong ngoặc
+  'cell-selector': /\b[A-Za-z0-9_]+\b/,
+}
