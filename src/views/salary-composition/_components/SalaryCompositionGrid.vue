@@ -57,7 +57,7 @@
           <div class="col-span-2 h-8 flex items-center">
             <p class="font-normal">Tên thành phần <span class="text-[red]">*</span></p>
           </div>
-          <div class="col-span-10">
+          <div class="lg:col-span-8 col-span-12">
             <MsInput v-if="type !== 'detail'" name="salaryCompositionName" autofocus />
             <div
               v-else
@@ -80,7 +80,7 @@
           <div class="col-span-2 h-8 flex items-center">
             <p class="font-normal">Mã thành phần <span class="text-[red]">*</span></p>
           </div>
-          <div class="col-span-10">
+          <div class="lg:col-span-8 col-span-12">
             <MsInput
               v-if="type !== 'detail'"
               :disabled="type === 'update'"
@@ -108,7 +108,7 @@
           <div class="col-span-2 h-8 flex items-center">
             <p class="font-normal">Đơn vị áp dụng<span class="text-[red]">*</span></p>
           </div>
-          <div class="col-span-10">
+          <div class="lg:col-span-8 col-span-12">
             <UnitDropdownBoxControl v-if="type !== 'detail'" name="selectedOrganizationIds" />
             <div
               v-else
@@ -128,10 +128,10 @@
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
-          <div class="col-span-2 h-8 flex items-center">
+          <div class="lg:col-span-2 col-span-3 h-8 flex items-center">
             <p class="font-normal">Loại thành phần<span class="text-[red]">*</span></p>
           </div>
-          <div class="col-span-3">
+          <div class="lg:col-span-3 col-span-5">
             <MsSelectControl
               v-if="type !== 'detail'"
               name="compositionType"
@@ -156,10 +156,10 @@
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
-          <div class="col-span-2 h-8 flex items-center">
+          <div class="lg:col-span-2 col-span-12 h-8 flex items-center">
             <p class="font-normal">Tính chất<span class="text-[red]">*</span></p>
           </div>
-          <div class="col-span-3">
+          <div class="lg:col-span-3 col-span-5">
             <MsSelectControl
               v-if="type !== 'detail'"
               name="compositionNature"
@@ -182,7 +182,7 @@
               </div>
             </div>
           </div>
-          <div class="col-span-7 ml-4">
+          <div class="lg:col-span-7 col-span-7 ml-4">
             <div v-if="values.compositionNature === 1" class="flex items-center gap-x-4 h-8">
               <MsRadioControl label="Chịu thuế" id="taxable_1" name="taxable" :value="1" />
               <MsRadioControl
@@ -206,13 +206,13 @@
           <div class="col-span-2 h-8 flex items-center">
             <p class="font-normal">Định mức</p>
           </div>
-          <div class="col-span-10">
+          <div class="lg:col-span-8 col-span-12">
             <MsFormula name="norms" placeholder="Tự động gợi ý công thức và tham số khi gõ" />
           </div>
         </div>
         <div v-if="values.compositionNature < 3" class="grid grid-cols-12 mb-4">
           <div class="col-span-2"></div>
-          <div class="col-span-10">
+          <div class="lg:col-span-8 col-span-12">
             <MsCheckbox
               name="isOverNorms"
               id="isOverNorms"
@@ -221,10 +221,10 @@
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
-          <div class="col-span-2 h-8 flex items-center">
+          <div class="lg:col-span-2 col-span-3 h-8 flex items-center">
             <p class="font-normal">Kiểu giá trị</p>
           </div>
-          <div class="col-span-3">
+          <div class="lg:col-span-3 col-span-5">
             <MsSelectControl
               name="valueType"
               :options="ValueType"
@@ -237,7 +237,7 @@
           <div class="col-span-2 h-8 flex items-center">
             <p class="font-normal">Giá trị</p>
           </div>
-          <div class="col-span-10">
+          <div class="lg:col-span-8 col-span-12">
             <div class="flex flex-col w-full gap-y-2.5">
               <div class="flex flex-col gap-y-2.5">
                 <MsRadioControl
@@ -247,7 +247,7 @@
                   :value="1"
                 />
                 <div class="grid grid-cols-12 gap-2">
-                  <div class="col-span-5">
+                  <div class="col-span-4">
                     <MsSelectControl
                       :disabled="values.valueCalculationType === 2"
                       name="sumScope"
@@ -269,8 +269,8 @@
                     v-if="values.valueCalculationType === 1"
                     :class="[
                       values.valueCalculationType === 1 && values.sumScope === 3
-                        ? 'col-span-5'
-                        : 'col-span-7',
+                        ? 'col-span-6'
+                        : 'col-span-8',
                     ]"
                   >
                     <SelectRelatedComposition
@@ -301,15 +301,15 @@
           <div class="col-span-2 h-8 flex items-center">
             <p class="font-normal">Mô tả</p>
           </div>
-          <div class="col-span-10">
+          <div class="lg:col-span-8 col-span-12">
             <MsTextarea name="description" />
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
-          <div class="col-span-2 h-8 flex items-center">
+          <div class="lg:col-span-2 col-span-12 h-8 flex items-center">
             <p class="font-normal">Hiển thị trên phiếu lương</p>
           </div>
-          <div class="col-span-10 flex h-8 items-center gap-x-6">
+          <div class="lg:col-span-8 col-span-12 flex h-8 items-center gap-x-6">
             <MsRadioControl
               label="Có"
               id="optionShowPaycheck_1"
@@ -334,7 +334,7 @@
           <div class="col-span-2 h-8 flex items-center">
             <p class="font-normal">Nguồn tạo</p>
           </div>
-          <div class="col-span-3">
+          <div class="lg:col-span-3 col-span-5">
             <MsSelectControl
               :disabled="true"
               name="generatingSource"
