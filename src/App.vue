@@ -42,7 +42,7 @@ import ConfirmDialog from 'primevue/confirmdialog'
           </div>
         </div>
         <div class="flex items-center pb-4">
-          <span class="flex-1 text-[#101828] font-normal">{{ message.message }}</span>
+          <div v-html="message.message" class="flex-1 text-[#101828] font-normal"></div>
         </div>
 
         <div class="flex justify-end gap-x-2">

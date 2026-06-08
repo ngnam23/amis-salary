@@ -106,17 +106,34 @@ export const useSalaryActions = (
    */
   const handleActionAll = (action) => {
     if (action.value === 'deleteAll') {
-      showConfirm(
-        `Bạn có chắc chắn muốn xóa thành phần lương đã chọn không?`,
-        () => {
-          handleDeleteSalaryComposition(selectedIdsArray.value)
-        },
-        'Thông báo',
-        'Xóa',
-        'Hủy',
-        '!bg-[#F04438] !border-[#F04438] hover:!bg-[#D92D20]',
-        '',
+      const hasSystemItem = rows.value.some(
+        (item) => selectedIdsArray.value.includes(item.salaryCompositionId) && item.isSystem,
       )
+      if (hasSystemItem) {
+        showConfirm(
+          `Đây là thành phần lương mặc định của hệ thống nên không thể xóa. Vui lòng kiểm tra lại.`,
+          () => {
+            return
+          },
+          'Thông báo',
+          'Đóng',
+          'Hủy',
+          '',
+          '!hidden',
+        )
+      } else {
+        showConfirm(
+          `Bạn có chắc chắn muốn xóa thành phần lương đã chọn không?`,
+          () => {
+            handleDeleteSalaryComposition(selectedIdsArray.value)
+          },
+          'Thông báo',
+          'Xóa',
+          'Hủy',
+          '!bg-[#F04438] !border-[#F04438] hover:!bg-[#D92D20]',
+          '',
+        )
+      }
     } else if (action.value === 'activeAll') {
       showConfirm(
         `Bạn có chắc chắn muốn chuyển trạng thái thành phần lương đã chọn sang đang theo dõi không?`,
@@ -143,20 +160,35 @@ export const useSalaryActions = (
    */
   const handleRowSelect = (option, row) => {
     if (option === 'delete') {
-      showConfirm(
-        `Bạn có chắc chắn muốn xóa thành phần lương ${row.salaryCompositionName} không?`,
-        () => {
-          handleDeleteSalaryComposition([row.salaryCompositionId])
-        },
-        'Thông báo',
-        'Xóa',
-        'Hủy',
-        '!bg-[#F04438] !border-[#F04438] hover:!bg-[#D92D20]',
-        '',
-      )
+      const isSystemItem = row.isSystem
+      if (isSystemItem) {
+        showConfirm(
+          `Đây là thành phần lương mặc định của hệ thống nên không thể xóa. Vui lòng kiểm tra lại.`,
+          () => {
+            return
+          },
+          'Thông báo',
+          'Đóng',
+          'Hủy',
+          '',
+          '!hidden',
+        )
+      } else {
+        showConfirm(
+          `Bạn có chắc chắn muốn xóa thành phần lương <b>${row.salaryCompositionName}</b> không?`,
+          () => {
+            handleDeleteSalaryComposition([row.salaryCompositionId])
+          },
+          'Thông báo',
+          'Xóa',
+          'Hủy',
+          '!bg-[#F04438] !border-[#F04438] hover:!bg-[#D92D20]',
+          '',
+        )
+      }
     } else if (option === 'toggleStatus') {
       showConfirm(
-        `Bạn có chắc chắn muốn chuyển trạng thái thành phần lương ${row.salaryCompositionName} sang ${row.isActive ? 'ngừng theo dõi' : 'đang theo dõi'} không?`,
+        `Bạn có chắc chắn muốn chuyển trạng thái thành phần lương <b>${row.salaryCompositionName}</b> sang ${row.isActive ? 'ngừng theo dõi' : 'đang theo dõi'} không?`,
         () => {
           handleChangeStatusSalaryComposition(row.isActive ? 0 : 1, [row.salaryCompositionId])
         },

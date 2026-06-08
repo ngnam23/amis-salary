@@ -16,31 +16,38 @@ import { useSalaryCompositionGrid } from '@/composables/useSalaryCompositionGrid
 import SalaryCompositionGrid from './_components/SalaryCompositionGrid.vue'
 import UnitDropdownBox from './_components/UnitDropdownBox.vue'
 
-const batchActionOptions = [
+const batchActionOptions = (rows, selectedIdsArray) => [
   {
     label: 'Ngừng theo dõi',
     value: 'unActiveAll',
     icon: 'icon-circle-minus-yellow',
     class: 'text-[#f90] border-[#FF9900] hover:bg-[#FEF0C7] hover:border-[#DC6803]',
+    isShowBtn:
+      rows &&
+      rows.some((row) => selectedIdsArray.includes(row.salaryCompositionId) && row.isActive),
   },
   {
     label: 'Đang theo dõi',
     value: 'activeAll',
     icon: 'icon-circle-check-green',
     class: 'text-[#34b057] !border-[#34b057] hover:bg-[#A8D9C8] hover:border-[#0A724B]',
+    isShowBtn:
+      rows &&
+      rows.some((row) => selectedIdsArray.includes(row.salaryCompositionId) && !row.isActive),
   },
   {
     label: 'Xóa',
     value: 'deleteAll',
     icon: 'icon-trash-red',
     class: 'text-[#F04438] border-[#F04438] hover:bg-[#FEE4E2] hover:border-[#D92D20]',
+    isShowBtn: true,
   },
 ]
 
 const activeTypeSelectOptions = [
   { label: 'Tất cả', value: -1 },
-  { label: 'Đang sử dụng', value: 1 },
-  { label: 'Ngừng sử dụng', value: 0 },
+  { label: 'Đang theo dõi', value: 1 },
+  { label: 'Ngừng theo dõi', value: 0 },
 ]
 
 const {
@@ -95,8 +102,6 @@ const handleNextPage = () => {
   }
 }
 
-// const isOpenCustomColumnDrawer = ref(false)
-
 const selectedIdsArray = ref([])
 
 /**
@@ -134,7 +139,7 @@ const { handleActionAll, handleRowSelect, showConfirm, handleDeleteSalaryComposi
 
 const handleMoreDelete = (detail) => {
   showConfirm(
-    `Bạn có chắc chắn muốn xóa thành phần lương ${detail.salaryCompositionName} không?`,
+    `Bạn có chắc chắn muốn xóa thành phần lương <b>${detail.salaryCompositionName}</b> không?`,
     () => {
       const isSuccess = handleDeleteSalaryComposition([detail.salaryCompositionId])
       if (isSuccess) {
@@ -254,7 +259,9 @@ onUnmounted(() => {
                 </div>
                 <div class="flex items-center gap-x-2">
                   <MsButtonBase
-                    v-for="item in batchActionOptions"
+                    v-for="item in batchActionOptions(rows, selectedIdsArray).filter(
+                      (option) => option.isShowBtn,
+                    )"
                     :key="item.value"
                     :label="item.label"
                     :class="item.class"
