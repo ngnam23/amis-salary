@@ -8,10 +8,10 @@
           :key="item.name"
           :class="[
             'sidebar flex items-center gap-2 bg-transparent h-8 px-[15px] rounded-[8px] cursor-pointer hover:bg-e9e',
-            item.route === '/salarycomposition' ? 'active' : '',
+            item.route === '/salary-composition' ? 'active' : '',
           ]"
         >
-          <div :class="[item.icon, item.route === '/salarycomposition' ? 'active' : '']"></div>
+          <div :class="[item.icon, item.route === '/salary-composition' ? 'active' : '']"></div>
           <span class="text-left">{{ item.name }}</span>
         </div>
       </div>

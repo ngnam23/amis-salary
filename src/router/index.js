@@ -9,12 +9,12 @@ const router = createRouter({
       component: () => import('@/layouts/TheLayout.vue'),
       children: [
         {
-          path: 'salarycomposition',
-          name: 'salarycomposition',
+          path: 'salary-composition',
+          name: 'salary-composition',
           component: () => import('@/views/salary-composition/SalaryComposition.vue'),
         },
         {
-          path: 'salarycomposition/system-category',
+          path: 'salary-composition/system-category',
           name: 'system-category',
           component: () => import('@/views/system-category/SystemCategory.vue'),
         },

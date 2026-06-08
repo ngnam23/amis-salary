@@ -179,7 +179,7 @@ onMounted(() => {
       <div class="flex items-center pb-[14px]">
         <div
           class="w-9 h-9 mr-2 rounded-full flex items-center justify-center hover:bg-[#dadce3] cursor-pointer"
-          @click="$router.push('/salarycomposition')"
+          @click="$router.push('/salary-composition')"
         >
           <div class="icon-arrow-left"></div>
         </div>
@@ -224,7 +224,12 @@ onMounted(() => {
         </div>
         <div class="flex-1 w-full overflow-x-auto">
           <div class="min-w-full h-full overflow-x-auto">
-            <div class="h-[calc(100%-48px)] overflow-y-auto bg-white">
+            <div
+              :class="[
+                'relative h-[calc(100%-48px)] bg-white',
+                rows.length ? 'overflow-y-auto' : 'overflow-hidden',
+              ]"
+            >
               <ms-table
                 :fields="fields.filter((field) => field.display)"
                 :rows="rows"
@@ -234,6 +239,13 @@ onMounted(() => {
                 @update-selected-ids="handleSelectedIds"
               >
               </ms-table>
+              <div
+                v-if="!rows.length && !isLoading"
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center"
+              >
+                <div class="ms-table__icon_nodata"></div>
+                <div class="mt-4 font-normal">Không có dữ liệu</div>
+              </div>
             </div>
             <div
               class="flex items-center px-4 justify-between h-12 bg-white rounded-b-[8px] border-t border-[#D5D7DA]"

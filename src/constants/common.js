@@ -7,7 +7,7 @@ export const SIDEBAR_MENU = [
   {
     name: 'Thành phần lương',
     icon: 'icon-sidebar-salary-composition',
-    route: '/salarycomposition',
+    route: '/salary-composition',
   },
   {
     name: 'Mẫu bảng lương',

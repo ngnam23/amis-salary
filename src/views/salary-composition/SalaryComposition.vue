@@ -199,7 +199,7 @@ onUnmounted(() => {
         <div class="flex gap-x-3">
           <MsButtonBase
             label="Danh mục của hệ thống"
-            @click="$router.push('/salarycomposition/system-category')"
+            @click="$router.push('/salary-composition/system-category')"
           >
             <div class="icon-rule"></div>
           </MsButtonBase>
@@ -280,7 +280,12 @@ onUnmounted(() => {
         </div>
         <div class="flex-1 w-full overflow-x-auto">
           <div class="min-w-full h-full overflow-x-auto">
-            <div class="h-[calc(100%-48px)] overflow-y-auto bg-white">
+            <div
+              :class="[
+                'relative h-[calc(100%-48px)] bg-white',
+                rows.length ? 'overflow-y-auto' : 'overflow-hidden',
+              ]"
+            >
               <ms-table
                 :fields="fields.filter((field) => field.display)"
                 :rows="rows"
@@ -327,6 +332,13 @@ onUnmounted(() => {
                   </div>
                 </template>
               </ms-table>
+              <div
+                v-if="!rows.length && !isLoading"
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center"
+              >
+                <div class="ms-table__icon_nodata"></div>
+                <div class="mt-4 font-normal">Không có dữ liệu</div>
+              </div>
             </div>
             <div
               class="flex items-center px-4 justify-between h-12 bg-white rounded-b-[8px] border-t border-[#D5D7DA]"

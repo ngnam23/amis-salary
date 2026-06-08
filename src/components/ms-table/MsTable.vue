@@ -22,7 +22,7 @@
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody v-if="rows.length">
       <tr
         v-for="row in rows"
         :key="row.salaryCompositionId"
