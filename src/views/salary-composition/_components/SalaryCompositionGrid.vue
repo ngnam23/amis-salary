@@ -213,11 +213,24 @@
         <div v-if="values.compositionNature < 3" class="grid grid-cols-12 mb-4">
           <div class="col-span-2"></div>
           <div class="lg:col-span-8 col-span-12">
-            <MsCheckbox
-              name="isOverNorms"
-              id="isOverNorms"
-              label="Cho phép giá trị tính vượt quá định mức"
-            />
+            <div class="flex items-center w-full">
+              <MsCheckbox
+                name="isOverNorms"
+                id="isOverNorms"
+                label="Cho phép giá trị tính vượt quá định mức"
+              />
+              <div
+                v-tooltip.bottom="{
+                  value:
+                    'Nếu không tích chọn thì khi tính giá trị của thành phần lương này mà số tiền vượt quá định mức thì chương trình sẽ tự động lấy tối đa bằng định mức đã nhập',
+                  showDelay: 100,
+                  class: 'min-w-[500px]',
+                }"
+                class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#0000001a] cursor-pointer"
+              >
+                <div class="icon-circle-info"></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="grid grid-cols-12 mb-4">
